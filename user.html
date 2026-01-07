@@ -48,7 +48,21 @@
         .purpose-select { margin-left: 10px; padding: 5px; border-radius: 5px; }
         .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; }
         .filter-bar select, .search-bar { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
-        input, select, textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; box-sizing: border-box; }
+        input, select, textarea, button { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
+        button { background-color: var(--primary-color); color: white; border: none; cursor: pointer; }
+        
+        .member-list .member-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; }
+        .member-item img { width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
+        
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 500px; text-align: center; position: relative; }
+        .modal-content img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; border: 3px solid var(--primary-color); object-fit: cover; }
+        .close-btn { position: absolute; top: 10px; right: 15px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
+
+        #profile-image-container { position: relative; width: 120px; height: 120px; margin: 0 auto 20px; cursor: pointer; }
+        #profile-image-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color); }
+        #profile-image-container .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); color: white; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        #profile-image-container:hover .overlay { opacity: 1; }
     </style>
 </head>
 <body>
@@ -66,7 +80,7 @@
             </div>
         </div>
 
-        <div id="member-section" class="page"><div class="card"><h2>সদস্য তালিকা</h2><input type="text" id="memberSearch" class="search-bar" placeholder="সদস্য খুঁজুন..."><div id="memberList" class="data-list"><p>লোড হচ্ছে...</p></div></div></div>
+        <div id="member-section" class="page"><div class="card"><h2>সদস্য তালিকা</h2><input type="text" id="memberSearch" class="search-bar" placeholder="সদস্য খুঁজুন..."><div id="memberList" class="member-list"><p>লোড হচ্ছে...</p></div></div></div>
         <div id="donation-section" class="page"><div class="card"><h2>ডোনেশন তালিকা</h2><div class="filter-bar"><select id="donationSort"><option value="latest">সর্বশেষ</option><option value="ranking">সর্বোচ্চ দাতা</option></select></div><div id="donationList" class="data-list"><p>লোড হচ্ছে...</p></div></div></div>
         <div id="finance-section" class="page"><div class="card"><h2>আয়-ব্যয় হিসাব</h2><div class="filter-bar"><select id="financeMonthFilter"><option value="all">সর্বমোট হিসাব</option></select></div><div id="finance-summary"><p>লোড হচ্ছে...</p></div></div></div>
         <div id="blood-section" class="page"><div class="card"><h2>রক্তদাতার তালিকা</h2><div class="filter-bar"><select id="bloodGroupFilter"><option value="">সব গ্রুপ</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="O+">O+</option><option value="O-">O-</option><option value="AB+">AB+</option><option value="AB-">AB-</option></select><select id="bloodEligibilityFilter"><option value="all">সবাই</option><option value="eligible">রক্তদানে প্রস্তুত</option></select></div><div id="bloodList" class="data-list"><p>লোড হচ্ছে...</p></div></div></div>
@@ -75,15 +89,20 @@
             <h2><i class="fas fa-user-edit"></i> আমার প্রোফাইল</h2>
             <div class="card">
                 <h3>প্রোফাইল তথ্য</h3>
-                <form id="profileEditForm">
-                    <!-- Form fields will be loaded by JS -->
-                </form>
+                <div id="profile-image-container">
+                    <img id="profileImg" src="https://via.placeholder.com/120" alt="প্রোফাইল ছবি">
+                    <div class="overlay"><i class="fas fa-camera"></i>&nbsp;<span>ছবি পরিবর্তন</span></div>
+                </div>
+                <form id="profileEditForm"><!-- Form fields will be loaded by JS --></form>
             </div>
             <div class="card">
                 <h3>আমার ডোনেশন হিস্ট্রি</h3>
                 <div id="myDonationHistory" class="data-list"><p>লোড হচ্ছে...</p></div>
             </div>
         </div>
+        
+        <div id="memberModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('memberModal')">&times;</span><img id="modalImg" src=""><h3 id="modalName"></h3><table id="modalInfoTable"></table></div></div>
+        <div id="photoUpdateModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('photoUpdateModal')">&times;</span><h2>ছবি আপডেট করুন</h2><form id="photoUpdateForm"><input type="file" id="newProfilePhoto" accept="image/*" required><button type="submit">আপলোড করুন</button><p id="photoUploadStatus"></p></form></div></div>
     </main>
     <nav class="bottom-nav">
         <div class="nav-item active" data-page="home-section"><i class="fas fa-home"></i><span>হোম</span></div>
@@ -110,6 +129,7 @@
     let isDataLoaded = { members: false, finances: false };
     const donationPurposes = { "samajik": "সামাজিক উন্নয়ন", "khela": "খেলাধুলা", "mosjid": "মসজিদ উন্নয়ন" };
     
+    // Auth Management
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             currentUser = user;
@@ -130,9 +150,10 @@
         } else { window.location.replace('login.html'); }
     });
     
+    // Page Navigation
     document.querySelectorAll('.nav-item').forEach(item => item.dataset.page && item.addEventListener('click', () => showPage(item.dataset.page)));
 
-    async function showPage(pageId) {
+    window.showPage = async function(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId)?.classList.add('active');
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -143,7 +164,7 @@
                 case 'member-section':
                 case 'blood-section':
                     if (!isDataLoaded.members) {
-                        const snapshot = await getDocs(collection(db, "members"));
+                        const snapshot = await getDocs(query(collection(db, "members"), orderBy("name")));
                         membersData = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
                         isDataLoaded.members = true;
                     }
@@ -165,6 +186,7 @@
                     else renderFinance();
                     break;
                 case 'profile-section':
+                    if (!currentUser || currentUser.isAnonymous) break;
                     const userDoc = await getDoc(doc(db, "members", currentUser.uid));
                     renderProfileForm(userDoc.data());
                     await loadMyDonations();
@@ -172,26 +194,31 @@
             }
         } catch (error) {
             console.error(`Error loading page ${pageId}:`, error);
-            document.getElementById(pageId).innerHTML = `<div class="card" style="color:red;"><h3>${pageId} লোড করা সম্ভব হয়নি।</h3></div>`;
+            document.getElementById(pageId).innerHTML = `<div class="card" style="color:red;"><h3>এই পৃষ্ঠাটি লোড করা সম্ভব হয়নি।</h3><p>${error.message}</p></div>`;
         }
     }
 
+    // Render Functions
     function renderMembers() {
         const memberList = document.getElementById('memberList');
-        memberList.innerHTML = membersData.map(m => `<div>${m.name}</div>`).join(''); // Simplified for example
+        memberList.innerHTML = membersData.map(m => `
+            <div class="member-item" onclick="showMemberDetails('${m.id}')">
+                <img src="${m.img || 'https://via.placeholder.com/40'}" alt="${m.name}">
+                <div>${m.name}</div>
+            </div>`).join('');
     }
 
     function renderBloodDonors() {
-        // Bug Fix: Filter out members who are not willing to donate.
         const willingMembers = membersData.filter(m => m.isWillingToDonate !== false);
         const bloodList = document.getElementById('bloodList');
-        bloodList.innerHTML = willingMembers.map(d => `<div>${d.name} - ${d.blood}</div>`).join(''); // Simplified
+        bloodList.innerHTML = willingMembers.map(d => `<div class="data-item">${d.name} - ${d.blood}</div>`).join('');
     }
     
-    function renderDonations() { /* Render logic for donations */ }
-    function renderFinance() { /* Render logic for finance */ }
+    function renderDonations() { /* Donation render logic here */ }
+    function renderFinance() { /* Finance render logic here */ }
 
     function renderProfileForm(data) {
+        document.getElementById('profileImg').src = data.img || 'https://via.placeholder.com/120';
         const form = document.getElementById('profileEditForm');
         form.innerHTML = `
             <div class="form-group"><label>নাম:</label><input type="text" id="profileName" value="${data.name || ''}"></div>
@@ -210,13 +237,47 @@
             };
             await updateDoc(doc(db, "members", currentUser.uid), newData);
             alert("প্রোফাইল আপডেট হয়েছে!");
-            isDataLoaded.members = false; // Force reload of member data
+            isDataLoaded.members = false;
         };
+        document.getElementById('profile-image-container').onclick = () => openModal('photoUpdateModal');
     }
 
     async function loadMyDonations() {
-        // This function remains the same as provided in the previous, detailed response.
+        const historyDiv = document.getElementById('myDonationHistory');
+        if (!currentUser || currentUser.isAnonymous) return;
+        const q = query(collection(db, "donations"), where("userId", "==", currentUser.uid), orderBy("date", "desc"));
+        const snapshot = await getDocs(q);
+        historyDiv.innerHTML = snapshot.empty ? '<p>আপনি এখনো কোনো অনুদান দেননি।</p>' : '';
+        let options = Object.entries(donationPurposes).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+        snapshot.forEach(doc => {
+            const d = doc.data();
+            const date = d.date ? new Date(d.date).toLocaleDateString('bn-BD') : 'N/A';
+            let purposeHTML = d.purposeKey ? `<strong>উদ্দেশ্য:</strong> ${donationPurposes[d.purposeKey]}` : `<select class="purpose-select" onchange="updateDonationPurpose('${doc.id}', this.value)"><option value="">-- উদ্দেশ্য --</option>${options}</select>`;
+            historyDiv.innerHTML += `<div class="data-item"><strong>পরিমাণ:</strong> ${d.amount} টাকা | <strong>তারিখ:</strong> ${date} | ${purposeHTML}</div>`;
+        });
     }
+
+    window.updateDonationPurpose = async (id, key) => {
+        if (!key) return;
+        await updateDoc(doc(db, "donations", id), { purposeKey: key });
+        alert("উদ্দেশ্য আপডেট হয়েছে!");
+        loadMyDonations();
+    };
+    
+    // Modal & Helper Functions
+    window.openModal = (modalId) => document.getElementById(modalId).style.display = "block";
+    window.closeModal = (modalId) => document.getElementById(modalId).style.display = "none";
+
+    window.showMemberDetails = (id) => {
+        const member = membersData.find(m => m.id === id);
+        if (!member) return;
+        document.getElementById('modalImg').src = member.img || 'https://via.placeholder.com/100';
+        document.getElementById('modalName').innerText = member.name;
+        document.getElementById('modalInfoTable').innerHTML = `
+            <tr><td>মোবাইল:</td><td>${member.phone || 'N/A'}</td></tr>
+            <tr><td>রক্তের গ্রুপ:</td><td>${member.blood || 'N/A'}</td></tr>`;
+        openModal('memberModal');
+    };
 </script>
 </body>
 </html>
