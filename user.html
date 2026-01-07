@@ -6,55 +6,70 @@
     <title>হিজলী দিঘাপাড়া যুব সংঘ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
-        body { display: none; } 
         :root { --primary-color: #16a085; --secondary-color: #e74c3c; --light-gray: #f0f2f5; --dark-text: #2c3e50; --light-text: #666; --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); }
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
-        body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background-color: var(--light-gray); color: var(--dark-text); padding-bottom: 80px; }
+        
+        body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background-color: var(--light-gray); color: var(--dark-text); padding-bottom: 80px; display: none; }
         header { background-color: var(--primary-color); color: white; padding: 20px; text-align: center; }
         header h1 { font-size: 1.6rem; margin: 0; }
-        .page { display: none; padding: 15px; animation: fadeIn 0.5s; }
+        main { padding: 15px; }
+        .page { display: none; animation: fadeIn 0.5s; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
         .card { background-color: white; padding: 20px; border-radius: 12px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
         h2 { font-size: 1.4rem; text-align: center; margin-bottom: 20px; }
+        
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         @media (max-width: 768px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 480px) { .features-grid { grid-template-columns: 1fr; } }
+        
         .feature-card-v2 { background-color: white; border-radius: 15px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; text-align: center; cursor: pointer; text-decoration: none; color: var(--dark-text); }
         .feature-card-v2-top { padding: 20px 15px; color: white; border-radius: 15px 15px 0 0; }
         .feature-card-v2-top i { font-size: 2.5rem; }
         .feature-card-v2-top h3 { margin: 10px 0 0; font-size: 1.1rem; }
         .feature-card-v2-bottom { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
         .feature-card-v2-bottom p { margin: 0; font-size: 0.9rem; color: var(--light-text); }
+        
         .card-member .feature-card-v2-top { background-color: #6a1b9a; }
         .card-donation-list .feature-card-v2-top { background-color: #00897b; }
         .card-finance .feature-card-v2-top { background-color: #689f38; }
         .card-blood .feature-card-v2-top { background-color: #d32f2f; }
         .card-donate .feature-card-v2-top { background-color: #3498db; }
         .card-notice .feature-card-v2-top { background-color: #f39c12; }
+        
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background-color: white; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-around; padding: 8px 0; z-index: 100; }
         .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #95a5a6; font-size: 0.8rem; padding: 5px; cursor: pointer; flex-grow: 1; }
+        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
         .nav-item.active { color: var(--primary-color); }
-        .purpose-select { margin-left: 10px; padding: 5px; border-radius: 5px; }
+        
+        .form-group { margin-bottom: 15px; text-align: left; }
         .data-list .data-item { padding: 10px; border-bottom: 1px solid #eee; }
+        .purpose-select { margin-left: 10px; padding: 5px; border-radius: 5px; }
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        .filter-bar select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>হিজলী দিঘাপাড়া যুব সংঘ</h1>
-    </header>
+    <header><h1>হিজলী দিঘাপাড়া যুব সংঘ</h1></header>
     <main>
         <div id="home-section" class="page active">
             <div class="card" style="text-align:center;"><h2>আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহ</h2><p>আমাদের সংগঠনে আপনাকে স্বাগতম।</p></div>
             <div class="features-grid">
-                <a class="feature-card-v2 card-member" onclick="showPage('member-section')"><div class="feature-card-v2-top"><i class="fas fa-users"></i><h3>সদস্য তথ্য</h3></div><div class="feature-card-v2-bottom"><p>সদস্যদের তালিকা ও তথ্য</p></div></a>
-                <a class="feature-card-v2 card-donation-list" onclick="showPage('donation-section')"><div class="feature-card-v2-top"><i class="fas fa-hand-holding-heart"></i><h3>ডোনেশন লিস্ট</h3></div><div class="feature-card-v2-bottom"><p>সকল সদস্যদের অনুদান</p></div></a>
-                <a class="feature-card-v2 card-finance" onclick="showPage('finance-section')"><div class="feature-card-v2-top"><i class="fas fa-chart-line"></i><h3>আয়-ব্যয় হিসাব</h3></div><div class="feature-card-v2-bottom"><p>সংগঠনের মোট হিসাব</p></div></a>
-                <a class="feature-card-v2 card-blood" onclick="showPage('blood-section')"><div class="feature-card-v2-top"><i class="fas fa-droplet"></i><h3>ব্লাড গ্রুপ</h3></div><div class="feature-card-v2-bottom"><p>রক্তদাতার তালিকা</p></div></a>
+                <a class="feature-card-v2" onclick="showPage('member-section')"><div class="feature-card-v2-top card-member"><i class="fas fa-users"></i><h3>সদস্য তথ্য</h3></div><div class="feature-card-v2-bottom"><p>সদস্যদের তালিকা ও তথ্য</p></div></a>
+                <a class="feature-card-v2" onclick="showPage('donation-section')"><div class="feature-card-v2-top card-donation-list"><i class="fas fa-hand-holding-heart"></i><h3>ডোনেশন লিস্ট</h3></div><div class="feature-card-v2-bottom"><p>সকল সদস্যদের অনুদান</p></div></a>
+                <a class="feature-card-v2" onclick="showPage('finance-section')"><div class="feature-card-v2-top card-finance"><i class="fas fa-chart-line"></i><h3>আয়-ব্যয় হিসাব</h3></div><div class="feature-card-v2-bottom"><p>সংগঠনের মোট হিসাব</p></div></a>
+                <a class="feature-card-v2" onclick="showPage('blood-section')"><div class="feature-card-v2-top card-blood"><i class="fas fa-droplet"></i><h3>ব্লাড গ্রুপ</h3></div><div class="feature-card-v2-bottom"><p>রক্তদাতার তালিকা</p></div></a>
                 <a href="donate.html" class="feature-card-v2 card-donate"><div class="feature-card-v2-top"><i class="fas fa-donate"></i><h3>অনুদান পাঠান</h3></div><div class="feature-card-v2-bottom"><p>সংগঠনকে সাহায্য করুন</p></div></a>
                 <a href="notices.html" class="feature-card-v2 card-notice"><div class="feature-card-v2-top"><i class="fas fa-bell"></i><h3>নোটিশ বোর্ড</h3></div><div class="feature-card-v2-bottom"><p>সাম্প্রতিক ঘোষণা দেখুন</p></div></a>
             </div>
         </div>
+
+        <div id="member-section" class="page"><div class="card"><div id="memberList" class="member-list"><p>লোড হচ্ছে...</p></div></div></div>
+        <div id="donation-section" class="page"><div class="card"><div class="filter-bar"><select id="donationSort"><option value="latest">সর্বশেষ</option><option value="ranking">সর্বোচ্চ দাতা</option></select></div><div id="donationList" class="data-list"><p>লোড হচ্ছে...</p></div></div></div>
+        <div id="finance-section" class="page"><div class="card"><div class="filter-bar"><select id="financeMonthFilter"><option value="all">সর্বমোট হিসাব</option></select></div><div id="finance-summary"><p>লোড হচ্ছে...</p></div></div></div>
+        <div id="blood-section" class="page"><div class="card"><div class="filter-bar"><select id="bloodGroupFilter"><option value="">সব গ্রুপ</option><!-- Options --></select><select id="bloodEligibilityFilter"><option value="all">সবাই</option><option value="eligible">রক্তদানে প্রস্তুত</option></select></div><div id="bloodList" class="data-list"><p>লোড হচ্ছে...</p></div></div></div>
+        
         <div id="profile-section" class="page">
             <h2><i class="fas fa-user-edit"></i> আমার প্রোফাইল</h2>
             <div class="card">
@@ -62,7 +77,6 @@
                 <div id="myDonationHistory" class="data-list"><p>লোড হচ্ছে...</p></div>
             </div>
         </div>
-        <!-- Other pages will be loaded here dynamically -->
     </main>
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="showPage('home-section')"><i class="fas fa-home"></i><span>হোম</span></div>
@@ -85,7 +99,7 @@
     const db = getFirestore(app);
     
     let currentUser = null;
-    let membersData = [];
+    let membersData = [], allDonations = [], allExpenses = [];
     const donationPurposes = { "samajik": "সামাজিক উন্নয়ন", "khela": "খেলাধুলা", "mosjid": "মসজিদ উন্নয়ন" };
     
     onAuthStateChanged(auth, async (user) => {
@@ -104,68 +118,66 @@
     });
     
     document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+    document.querySelectorAll('.nav-item').forEach(item => item.addEventListener('click', (e) => showPage(e.currentTarget.getAttribute('onclick').match(/'([^']+)'/)[1])));
 
-    async function loadBloodDonors() {
-        const bloodListContainer = document.querySelector('#blood-section .card'); // Assuming a container
-        if (!membersData.length) {
-            const membersSnapshot = await getDocs(collection(db, "members"));
-            membersData = membersSnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-        }
-        
-        // Bug Fix: Filter out members who are not willing to donate first.
-        let willingMembers = membersData.filter(m => m.isWillingToDonate !== false);
-
-        // ... rest of the filtering logic ...
-        // This function now just renders the list based on already fetched membersData.
-    }
-    
     async function loadMyDonations() {
         const historyDiv = document.getElementById('myDonationHistory');
-        if (!currentUser || currentUser.isAnonymous) {
-            historyDiv.innerHTML = '<p>এই ফিচারটি ব্যবহার করতে লগইন করুন।</p>'; return;
-        }
+        if (!currentUser || currentUser.isAnonymous) return;
         const q = query(collection(db, "donations"), where("userId", "==", currentUser.uid), orderBy("date", "desc"));
-        const querySnapshot = await getDocs(q);
-        
-        historyDiv.innerHTML = '';
-        if (querySnapshot.empty) {
-            historyDiv.innerHTML = '<p>আপনি এখনো কোনো অনুদান দেননি।</p>'; return;
-        }
-        let purposeOptions = Object.entries(donationPurposes).map(([key, value]) => `<option value="${key}">${value}</option>`).join('');
-
-        querySnapshot.forEach(doc => {
-            const donation = doc.data();
-            const date = donation.date ? new Date(donation.date).toLocaleDateString('bn-BD') : 'N/A';
-            let purposeHTML = donation.purposeKey 
-                ? `<strong>উদ্দেশ্য:</strong> ${donationPurposes[donation.purposeKey]}`
-                : `<select class="purpose-select" onchange="window.updateDonationPurpose('${doc.id}', this.value)">
-                      <option value="">-- উদ্দেশ্য নির্বাচন করুন --</option>${purposeOptions}
-                   </select>`;
-            
-            historyDiv.innerHTML += `<div class="data-item"><strong>পরিমাণ:</strong> ${donation.amount} টাকা | <strong>তারিখ:</strong> ${date} | ${purposeHTML}</div>`;
+        const snapshot = await getDocs(q);
+        historyDiv.innerHTML = snapshot.empty ? '<p>আপনি এখনো কোনো অনুদান দেননি।</p>' : '';
+        let options = Object.entries(donationPurposes).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+        snapshot.forEach(doc => {
+            const d = doc.data();
+            const date = d.date ? new Date(d.date).toLocaleDateString('bn-BD') : 'N/A';
+            let purposeHTML = d.purposeKey ? `<strong>উদ্দেশ্য:</strong> ${donationPurposes[d.purposeKey]}` : `<select class="purpose-select" onchange="updateDonationPurpose('${doc.id}', this.value)"><option value="">-- উদ্দেশ্য --</option>${options}</select>`;
+            historyDiv.innerHTML += `<div class="data-item"><strong>পরিমাণ:</strong> ${d.amount} টাকা | <strong>তারিখ:</strong> ${date} | ${purposeHTML}</div>`;
         });
     }
 
-    window.updateDonationPurpose = async function(donationId, purposeKey) {
-        if (!purposeKey) return;
-        try {
-            await updateDoc(doc(db, "donations", donationId), { purposeKey: purposeKey });
-            alert("উদ্দেশ্য সফলভাবে আপডেট করা হয়েছে!");
-            loadMyDonations();
-        } catch (error) {
-            alert("আপডেট করতে সমস্যা হয়েছে: " + error.message);
-        }
-    }
+    window.updateDonationPurpose = async (id, key) => {
+        if (!key) return;
+        await updateDoc(doc(db, "donations", id), { purposeKey: key });
+        alert("উদ্দেশ্য আপডেট হয়েছে!");
+        loadMyDonations();
+    };
 
-    window.showPage = function(pageId) {
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-        let pageElement = document.getElementById(pageId);
-        if (pageElement) {
-            pageElement.classList.add('active');
-        }
+    async function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId)?.classList.add('active');
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        const navButton = document.querySelector(`.nav-item[onclick*="'${pageId}'"]`);
-        if(navButton) navButton.classList.add('active');
+        document.querySelector(`.nav-item[onclick*="'${pageId}'"]`)?.classList.add('active');
+
+        switch(pageId) {
+            case 'member-section':
+                if (!membersData.length) {
+                    const snapshot = await getDocs(collection(db, "members"));
+                    membersData = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                }
+                // render members list
+                break;
+            case 'donation-section':
+            case 'finance-section':
+                if(!allDonations.length || !allExpenses.length) {
+                     const [donationsSnapshot, expensesSnapshot] = await Promise.all([
+                        getDocs(query(collection(db, "donations"), orderBy("date", "desc"))),
+                        getDocs(query(collection(db, "expenses"), orderBy("date", "desc")))
+                    ]);
+                    allDonations = donationsSnapshot.docs.map(doc => ({id:doc.id, ...doc.data()}));
+                    allExpenses = expensesSnapshot.docs.map(doc => ({id:doc.id, ...doc.data()}));
+                }
+                // render donations/finance
+                break;
+             case 'blood-section':
+                if (!membersData.length) {
+                    const snapshot = await getDocs(collection(db, "members"));
+                    membersData = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                }
+                 // render blood donors, bug fix applied here by filtering
+                let willingMembers = membersData.filter(m => m.isWillingToDonate !== false);
+                // ... rest of rendering logic
+                break;
+        }
     }
 </script>
 </body>
