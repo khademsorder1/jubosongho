@@ -15,7 +15,7 @@
         .menu-toggle { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
         .container { display: flex; }
         .sidebar { width: 220px; background-color: #34495e; color: white; min-height: calc(100vh - 60px); padding-top: 20px; transition: transform 0.3s ease-in-out; }
-        .sidebar a { display: flex; align-items: center; color: white; padding: 15px 20px; text-decoration: none; border-left: 4px solid transparent; }
+        .sidebar a { display: flex; align-items: center; color: white; padding: 15px 20px; text-decoration: none; border-left: 4px solid transparent; cursor: pointer; }
         .sidebar a:hover, .sidebar a.active { background-color: #4a627a; border-left-color: var(--secondary-color); }
         .sidebar a i { margin-right: 15px; width: 20px; }
         .main-content { flex-grow: 1; padding: 20px; }
@@ -28,11 +28,10 @@
         table { width: 100%; border-collapse: collapse; margin-top: 20px; min-width: 600px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
         th { background-color: #f2f2f2; }
-        .btn { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; color: white; font-size: 0.9rem; margin-top: 5px; }
+        .btn { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; color: white; font-size: 0.9rem; margin-right: 5px; }
         .btn-add { float: right; margin-bottom: 15px; }
         .btn-primary { background-color: var(--secondary-color); }
         .btn-success { background-color: #27ae60; }
-        .btn-warning { background-color: #f39c12; margin-right: 5px; }
         .btn-danger { background-color: #e74c3c; }
         .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: auto; }
         .modal-content { background-color: #fefefe; margin: 5% auto; padding: 25px; border-radius: 10px; width: 90%; max-width: 500px; position: relative; }
@@ -51,58 +50,141 @@
     <header class="header"><h1>অ্যাডমিন প্যানেল</h1><button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button></header>
     <div class="container">
         <nav class="sidebar" id="sidebar">
-            <a class="nav-link active" onclick="showPage('dashboard')"><i class="fas fa-tachometer-alt"></i><span>ড্যাশবোর্ড</span></a>
-            <a class="nav-link" onclick="showPage('pendingDonations')"><i class="fas fa-hourglass-half"></i><span>Pending Donations</span></a>
-            <a class="nav-link" onclick="showPage('donations')"><i class="fas fa-hand-holding-heart"></i><span>ডোনেশন</span></a>
-            <a class="nav-link" onclick="showPage('expenses')"><i class="fas fa-file-invoice-dollar"></i><span>ব্যয়</span></a>
-            <a class="nav-link" onclick="showPage('members')"><i class="fas fa-users"></i><span>সদস্য</span></a>
-            <a class="nav-link" onclick="showPage('notices')"><i class="fas fa-bullhorn"></i><span>নোটিশ</span></a>
-            <a class="nav-link" onclick="showPage('settings')"><i class="fas fa-cog"></i><span>সেটিংস</span></a>
-            <a id="adminLogoutBtn" style="cursor:pointer;"><i class="fas fa-sign-out-alt"></i><span>লগআউট</span></a>
+            <a class="nav-link active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i><span>ড্যাশবোর্ড</span></a>
+            <a class="nav-link" data-page="pendingDonations"><i class="fas fa-hourglass-half"></i><span>Pending Donations</span></a>
+            <a class="nav-link" data-page="donations"><i class="fas fa-hand-holding-heart"></i><span>ডোনেশন</span></a>
+            <a class="nav-link" data-page="expenses"><i class="fas fa-file-invoice-dollar"></i><span>ব্যয়</span></a>
+            <a class="nav-link" data-page="members"><i class="fas fa-users"></i><span>সদস্য</span></a>
+            <a class="nav-link" data-page="notices"><i class="fas fa-bullhorn"></i><span>নোটিশ</span></a>
+            <a class="nav-link" data-page="settings"><i class="fas fa-cog"></i><span>সেটিংস</span></a>
+            <a id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i><span>লগআউট</span></a>
         </nav>
         <main class="main-content">
-            <div id="dashboard" class="page active"><h2>ড্যাশবোর্ড</h2><div class="card"><h3>সংগঠনের আর্থিক অবস্থা</h3><div id="dashboardFinance" class="total-finance"></div></div></div>
+            <div id="dashboard" class="page active"><h2>ড্যাশবোর্ড</h2><div class="card"><h3>সংগঠনের আর্থিক অবস্থা</h3><div id="dashboardFinance" class="total-finance"><p>লোড হচ্ছে...</p></div></div></div>
             <div id="pendingDonations" class="page"><h2><i class="fas fa-hourglass-half"></i> অপেক্ষারত ডোনেশন</h2><div class="card"><div class="table-container"><table><thead><tr><th>নাম</th><th>পরিমাণ</th><th>মাধ্যম</th><th>TrxID/নম্বর</th><th>অ্যাকশন</th></tr></thead><tbody id="pending-donation-table-body"></tbody></table></div></div></div>
-            <div id="donations" class="page"><h2><i class="fas fa-hand-holding-heart"></i> ডোনেশন পরিচালনা</h2><div class="card"><button class="btn btn-primary btn-add" onclick="openDonationAddModal()">নতুন ডোনেশন</button><div class="table-container"><table><thead><tr><th>সদস্যের নাম</th><th>পরিমাণ (টাকা)</th><th>তারিখ</th><th>মাধ্যম</th><th>অ্যাকশন</th></tr></thead><tbody id="donation-table-body"></tbody></table></div></div></div>
-            <div id="expenses" class="page"><h2><i class="fas fa-file-invoice-dollar"></i> ব্যয় পরিচালনা</h2><div class="card"><button class="btn btn-primary btn-add" onclick="openModal('addExpenseModal')">নতুন ব্যয়</button><div class="table-container"><table><thead><tr><th>খাত</th><th>পরিমাণ (টাকা)</th><th>তারিখ</th><th>অ্যাকশন</th></tr></thead><tbody id="expense-table-body"></tbody></table></div></div></div>
+            <div id="donations" class="page"><h2><i class="fas fa-hand-holding-heart"></i> ডোনেশন পরিচালনা</h2><div class="card"><button class="btn btn-primary btn-add" id="openDonationModalBtn">নতুন ডোনেশন</button><div class="table-container"><table><thead><tr><th>সদস্যের নাম</th><th>পরিমাণ (টাকা)</th><th>তারিখ</th><th>মাধ্যম</th><th>অ্যাকশন</th></tr></thead><tbody id="donation-table-body"></tbody></table></div></div></div>
+            <div id="expenses" class="page"><h2><i class="fas fa-file-invoice-dollar"></i> ব্যয় পরিচালনা</h2><div class="card"><button class="btn btn-primary btn-add" id="openExpenseModalBtn">নতুন ব্যয়</button><div class="table-container"><table><thead><tr><th>খাত</th><th>পরিমাণ (টাকা)</th><th>তারিখ</th><th>অ্যাকশন</th></tr></thead><tbody id="expense-table-body"></tbody></table></div></div></div>
             <div id="members" class="page"><h2><i class="fas fa-users"></i> সদস্য পরিচালনা</h2><div class="card"><div class="table-container"><table><thead><tr><th>নাম</th><th>মোবাইল</th><th>রক্তের গ্রুপ</th><th>অ্যাকশন</th></tr></thead><tbody id="member-table-body"></tbody></table></div></div></div>
-            <div id="notices" class="page"><h2><i class="fas fa-bullhorn"></i> নোটিশ পরিচালনা</h2><div class="card"><h3>প্রকাশিত নোটিশ</h3><div id="notice-list"></div></div></div>
+            <div id="notices" class="page"><h2><i class="fas fa-bullhorn"></i> নোটিশ পরিচালনা</h2><div class="card"><form id="noticeForm"><input type="hidden" id="noticeId"><div class="form-group"><label for="noticeTitle">শিরোনাম:</label><input type="text" id="noticeTitle" required></div><div class="form-group"><label for="noticeDetails">বিস্তারিত:</label><textarea id="noticeDetails" rows="4" required></textarea></div><button type="submit" class="btn btn-primary">প্রকাশ করুন</button></form></div><div class="card"><h3>প্রকাশিত নোটিশ</h3><div id="notice-list"></div></div></div>
             <div id="settings" class="page"><h2><i class="fas fa-cog"></i> সেটিংস</h2><div class="card"><h3>পেমেন্ট নম্বর পরিচালনা</h3><form id="settingsForm"><div class="form-group"><label for="bkashNumber">বিকাশ নম্বর:</label><input type="text" id="bkashNumber"></div><div class="form-group"><label for="nagadNumber">নগদ নম্বর:</label><input type="text" id="nagadNumber"></div><div class="form-group"><label for="cashInfo">ক্যাশ তথ্য:</label><input type="text" id="cashInfo"></div><button type="submit" class="btn btn-primary">সেভ করুন</button></form></div></div>
         </main>
     </div>
-    <!-- Modals here -->
-    <div id="donationModal" class="modal"><div class="modal-content"><span class="close-btn" onclick="closeModal('donationModal')">&times;</span><h2 id="donationModalTitle">নতুন ডোনেশন</h2><form id="donationForm"><input type="hidden" id="donationId"><div class="form-group"><label>সদস্য:</label><select id="donationMember" required></select></div><div class="form-group"><label>পরিমাণ:</label><input type="number" id="donationAmount" required></div><div class="form-group"><label>তারিখ:</label><input type="date" id="donationDate" required></div><div class="form-group"><label>পেমেন্ট মাধ্যম:</label><select id="paymentMethod" required><option value="bKash">বিকাশ</option><option value="Nagad">নগদ</option><option value="Cash">ক্যাশ</option></select></div><button type="submit" class="btn btn-primary">সেভ করুন</button></form></div></div>
+    <!-- Modals -->
+    <div id="donationModal" class="modal"><div class="modal-content"><span class="close-btn" data-modal="donationModal">&times;</span><h2 id="donationModalTitle">নতুন ডোনেশন</h2><form id="donationForm"><input type="hidden" id="donationId"><div class="form-group"><label>সদস্য:</label><select id="donationMember" required></select></div><div class="form-group"><label>পরিমাণ:</label><input type="number" id="donationAmount" required></div><div class="form-group"><label>তারিখ:</label><input type="date" id="donationDate" required></div><div class="form-group"><label>পেমেন্ট মাধ্যম:</label><select id="paymentMethod" required><option value="bKash">বিকাশ</option><option value="Nagad">নগদ</option><option value="Cash">ক্যাশ</option></select></div><button type="submit" class="btn btn-primary">সেভ করুন</button></form></div></div>
+    <div id="addExpenseModal" class="modal"><div class="modal-content"><span class="close-btn" data-modal="addExpenseModal">&times;</span><h2>নতুন ব্যয়</h2><form id="addExpenseForm"><div class="form-group"><label for="expensePurpose">খাত নির্বাচন করুন:</label><select id="expensePurpose" required></select></div><div class="form-group"><label for="expenseAmount">টাকার পরিমাণ:</label><input type="number" id="expenseAmount" required></div><div class="form-group"><label for="expenseDate">তারিখ:</label><input type="date" id="expenseDate" required></div><button type="submit" class="btn btn-primary">সেভ করুন</button></form></div></div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, addDoc, deleteDoc, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, addDoc, deleteDoc, setDoc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
     const firebaseConfig = { apiKey: "AIzaSyDerc9e0-e7WBnkK2GoinFejp7zszXJ3Jc", authDomain: "songho-8ef5c.firebaseapp.com", projectId: "songho-8ef5c", storageBucket: "songho-8ef5c.appspot.com", messagingSenderId: "489031747232", appId: "1:489031747232:web:4c1cde63dabaa620ed2bc5", measurementId: "G-5NY15E3XJJ" };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    let allMembers = [];
-
-    onAuthStateChanged(auth, user => { if (user) { loadAllAdminData(); } else { window.location.href = 'admin-login.html'; } });
-    document.getElementById('adminLogoutBtn').addEventListener('click', () => signOut(auth));
     
-    async function loadAllAdminData(){
-        await loadAdminMembers();
-        await loadDashboardFinance();
-        await loadPendingDonations();
-        await loadAdminDonations();
-        // ... load other data ...
-        await loadSettings();
+    let allMembers = [];
+    const donationPurposes = { "samajik": "সামাজিক উন্নয়ন", "khela": "খেলাধুলা", "mosjid": "মসজিদ উন্নয়ন" };
+
+    // --- Helper Functions ---
+    function parseDate(dateString) {
+        if (!dateString) return null;
+        let d = new Date(dateString);
+        if (!isNaN(d.getTime())) return d;
+        if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
+            const parts = dateString.split('-');
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+        return null;
     }
 
-    async function loadAdminMembers() {
-        const querySnapshot = await getDocs(collection(db, "members"));
-        allMembers = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        // ... populate member table ...
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId)?.classList.add('active');
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.querySelector(`.nav-link[data-page="${pageId}"]`)?.classList.add('active');
     }
 
-    async function loadDashboardFinance() { /* ... unchanged ... */ }
+    function openModal(modalId) { document.getElementById(modalId).style.display = 'block'; }
+    function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+    
+    // --- Event Listeners ---
+    document.addEventListener('DOMContentLoaded', () => {
+        onAuthStateChanged(auth, user => {
+            if (user) { loadAllAdminData(); } else { window.location.href = 'admin-login.html'; }
+        });
+
+        document.getElementById('adminLogoutBtn').addEventListener('click', () => signOut(auth));
+        document.getElementById('menu-toggle').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+        document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => showPage(link.dataset.page)));
+        document.querySelectorAll('.close-btn').forEach(btn => btn.addEventListener('click', () => closeModal(btn.dataset.modal)));
+        document.getElementById('openDonationModalBtn').addEventListener('click', openDonationAddModal);
+        document.getElementById('openExpenseModalBtn').addEventListener('click', () => {
+             populatePurposeDropdown();
+             openModal('addExpenseModal');
+        });
+        document.getElementById('settingsForm').addEventListener('submit', handleSettingsSave);
+        document.getElementById('donationForm').addEventListener('submit', handleDonationSave);
+        document.getElementById('addExpenseForm').addEventListener('submit', handleExpenseSave);
+        document.getElementById('noticeForm').addEventListener('submit', handleNoticeSave);
+    });
+    
+    // --- Main Data Loading ---
+    async function loadAllAdminData() {
+        try {
+            const [membersSnapshot, donationsSnapshot, expensesSnapshot] = await Promise.all([
+                getDocs(collection(db, "members")),
+                getDocs(query(collection(db, "donations"), orderBy("date", "desc"))),
+                getDocs(query(collection(db, "expenses"), orderBy("date", "desc")))
+            ]);
+            
+            allMembers = membersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const allDonations = donationsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const allExpenses = expensesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            loadDashboardFinance(allDonations, allExpenses);
+            loadAdminMembers(allMembers);
+            loadAdminDonations(allDonations);
+            loadAdminExpenses(allExpenses);
+            loadPendingDonations();
+            loadAdminNotices();
+            loadSettings();
+        } catch (error) {
+            console.error("Failed to load admin data:", error);
+            document.querySelector('.main-content').innerHTML = `<div class="card" style="color:red;"><h3>ডেটা লোড করা সম্ভব হয়নি।</h3><p>ত্রুটি: ${error.message}</p></div>`;
+        }
+    }
+
+    // --- Individual Loaders ---
+    function loadDashboardFinance(donations, expenses) {
+        const totalIncome = donations.reduce((sum, d) => sum + Number(d.amount || 0), 0);
+        const totalExpense = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+        const totalBalance = totalIncome - totalExpense;
+        document.getElementById('dashboardFinance').innerHTML = `
+            <div class="finance-box"><h4>মোট আয়</h4><p>${totalIncome.toLocaleString('bn-BD')} টাকা</p></div>
+            <div class="finance-box"><h4>মোট ব্যয়</h4><p>${totalExpense.toLocaleString('bn-BD')} টাকা</p></div>
+            <div class="finance-box"><h4>বর্তমান ব্যালেন্স</h4><p>${totalBalance.toLocaleString('bn-BD')} টাকা</p></div>`;
+    }
+    
+    function loadAdminMembers(members) {
+        const tbody = document.getElementById('member-table-body');
+        tbody.innerHTML = '';
+        members.forEach(member => {
+            tbody.innerHTML += `<tr><td>${member.name || ''}</td><td>${member.phone || ''}</td><td>${member.blood || ''}</td>
+            <td><button class="btn btn-danger" onclick="window.deleteMember('${member.id}')">Delete</button></td></tr>`;
+        });
+    }
+
+    function loadAdminDonations(donations) {
+        const tbody = document.getElementById('donation-table-body');
+        tbody.innerHTML = '';
+        donations.forEach(d => {
+            const donationDate = parseDate(d.date);
+            tbody.innerHTML += `<tr><td>${d.userName || ''}</td><td>${d.amount || 0}</td>
+                <td>${donationDate ? donationDate.toLocaleDateString('bn-BD') : 'N/A'}</td><td>${d.paymentMethod || ''}</td>
+                <td><button class="btn btn-danger" onclick="window.deleteData('donations', '${d.id}')">Delete</button></td></tr>`;
+        });
+    }
 
     async function loadPendingDonations() {
         const tbody = document.getElementById('pending-donation-table-body');
@@ -111,59 +193,83 @@
         tbody.innerHTML = '';
         querySnapshot.forEach(doc => {
             const d = doc.data();
-            tbody.innerHTML += `<tr><td>${d.userName}</td><td>${d.amount}</td><td>${d.paymentMethod}</td><td>${d.transactionInfo}</td>
-                <td><button class="btn btn-success" onclick="approveDonation('${doc.id}')">Approve</button>
-                    <button class="btn btn-danger" onclick="rejectDonation('${doc.id}')">Reject</button></td></tr>`;
+            tbody.innerHTML += `<tr><td>${d.userName || ''}</td><td>${d.amount || 0}</td><td>${d.paymentMethod || ''}</td><td>${d.transactionInfo || ''}</td>
+                <td><button class="btn btn-success" onclick="window.approveDonation('${doc.id}')">Approve</button>
+                    <button class="btn btn-danger" onclick="window.rejectDonation('${doc.id}')">Reject</button></td></tr>`;
         });
     }
 
+    function loadAdminExpenses(expenses) {
+        const tbody = document.getElementById('expense-table-body');
+        tbody.innerHTML = '';
+        expenses.forEach(e => {
+            const expenseDate = parseDate(e.date);
+            tbody.innerHTML += `<tr><td>${donationPurposes[e.purposeKey] || e.purposeKey || ''}</td><td>${e.amount || 0}</td>
+            <td>${expenseDate ? expenseDate.toLocaleDateString('bn-BD') : 'N/A'}</td>
+            <td><button class="btn btn-danger" onclick="window.deleteData('expenses', '${e.id}')">Delete</button></td></tr>`;
+        });
+    }
+
+    async function loadAdminNotices() {
+        const container = document.getElementById('notice-list');
+        const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        container.innerHTML = '';
+        querySnapshot.forEach(doc => {
+            container.innerHTML += `<p>${doc.data().title} <button class="btn btn-danger" onclick="window.deleteData('notices', '${doc.id}')">Delete</button></p>`;
+        });
+    }
+
+    async function loadSettings() {
+        const docSnap = await getDoc(doc(db, "settings", "paymentInfo"));
+        if(docSnap.exists()){
+            const data = docSnap.data();
+            document.getElementById('bkashNumber').value = data.bkashNumber || '';
+            document.getElementById('nagadNumber').value = data.nagadNumber || '';
+            document.getElementById('cashInfo').value = data.cashInfo || '';
+        }
+    }
+    
+    // --- Action Handlers ---
     window.approveDonation = async function(pendingId) {
         const pendingDocRef = doc(db, "pending_donations", pendingId);
         const pendingDocSnap = await getDoc(pendingDocRef);
-        if(!pendingDocSnap.exists()) { alert("Error: Donation not found."); return; }
-        
+        if(!pendingDocSnap.exists()) return alert("Error: Donation not found.");
         const data = pendingDocSnap.data();
         const donationData = {
             userId: data.userId, userName: data.userName, userImage: data.userImage,
             amount: data.amount, paymentMethod: data.paymentMethod,
-            date: new Date().toISOString().split('T')[0] // today's date
+            date: new Date().toISOString().split('T')[0] // YYYY-MM-DD
         };
-
         await addDoc(collection(db, "donations"), donationData);
         await updateDoc(pendingDocRef, { status: "approved" });
-        alert("Donation approved and added to the list!");
+        alert("Donation approved!");
         loadAllAdminData();
     }
     
     window.rejectDonation = async function(pendingId) {
-        if(confirm("Are you sure you want to reject this donation?")){
-            await updateDoc(doc(db, "pending_donations", pendingId), { status: "rejected" });
-            alert("Donation rejected.");
-            loadPendingDonations();
-        }
+        if(!confirm("Are you sure?")) return;
+        await updateDoc(doc(db, "pending_donations", pendingId), { status: "rejected" });
+        alert("Donation rejected.");
+        loadPendingDonations();
     }
     
-    async function loadAdminDonations() {
-        const tbody = document.getElementById('donation-table-body');
-        const querySnapshot = await getDocs(query(collection(db, "donations"), orderBy("date", "desc")));
-        tbody.innerHTML = '';
-        querySnapshot.forEach(doc => {
-            const d = doc.data();
-            tbody.innerHTML += `<tr><td>${d.userName}</td><td>${d.amount}</td><td>${new Date(d.date).toLocaleDateString('bn-BD')}</td><td>${d.paymentMethod || ''}</td>
-                <td><button class="btn btn-danger" onclick="deleteDonation('${doc.id}')">Delete</button></td></tr>`;
-        });
+    window.deleteData = async function(collectionName, docId) {
+        if(!confirm("Are you sure you want to delete this item?")) return;
+        await deleteDoc(doc(db, collectionName, docId));
+        alert("Item deleted.");
+        loadAllAdminData();
     }
 
-    window.openDonationAddModal = function() {
+    function openDonationAddModal() {
         document.getElementById('donationForm').reset();
         document.getElementById('donationId').value = '';
         const select = document.getElementById('donationMember');
-        select.innerHTML = '';
-        allMembers.forEach(m => { select.innerHTML += `<option value="${m.id}" data-name="${m.name}" data-image="${m.img}">${m.name}</option>`; });
+        select.innerHTML = allMembers.map(m => `<option value="${m.id}" data-name="${m.name}" data-image="${m.img}">${m.name}</option>`).join('');
         openModal('donationModal');
     }
 
-    document.getElementById('donationForm').addEventListener('submit', async (e) => {
+    async function handleDonationSave(e) {
         e.preventDefault();
         const memberSelect = document.getElementById('donationMember');
         const selectedOption = memberSelect.options[memberSelect.selectedIndex];
@@ -176,19 +282,38 @@
         await addDoc(collection(db, "donations"), data);
         alert('ডোনেশন যোগ করা হয়েছে!');
         closeModal('donationModal'); loadAllAdminData();
-    });
-
-    async function loadSettings() {
-        const docSnap = await getDoc(doc(db, "settings", "paymentInfo"));
-        if(docSnap.exists()){
-            const data = docSnap.data();
-            document.getElementById('bkashNumber').value = data.bkashNumber || '';
-            document.getElementById('nagadNumber').value = data.nagadNumber || '';
-            document.getElementById('cashInfo').value = data.cashInfo || '';
-        }
+    }
+    
+    function populatePurposeDropdown() {
+        const select = document.getElementById('expensePurpose');
+        select.innerHTML = Object.entries(donationPurposes).map(([key, value]) => `<option value="${key}">${value}</option>`).join('');
     }
 
-    document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+    async function handleExpenseSave(e) {
+        e.preventDefault();
+        const data = {
+            purposeKey: document.getElementById('expensePurpose').value,
+            amount: Number(document.getElementById('expenseAmount').value),
+            date: document.getElementById('expenseDate').value
+        };
+        await addDoc(collection(db, "expenses"), data);
+        alert('ব্যয় যোগ করা হয়েছে!');
+        closeModal('addExpenseModal'); loadAllAdminData();
+    }
+    
+    async function handleNoticeSave(e) {
+        e.preventDefault();
+        const data = {
+            title: document.getElementById('noticeTitle').value,
+            details: document.getElementById('noticeDetails').value,
+            createdAt: new Date()
+        };
+        await addDoc(collection(db, "notices"), data);
+        alert('নোটিশ প্রকাশ করা হয়েছে!');
+        e.target.reset(); loadAdminNotices();
+    }
+
+    async function handleSettingsSave(e) {
         e.preventDefault();
         const data = {
             bkashNumber: document.getElementById('bkashNumber').value,
@@ -196,14 +321,8 @@
             cashInfo: document.getElementById('cashInfo').value
         };
         await setDoc(doc(db, "settings", "paymentInfo"), data);
-        alert("Settings updated successfully!");
-    });
-    
-    // Unchanged functions: deleteDonation, loadAdminExpenses, etc.
-    window.showPage = (pageId) => { /* ... */ };
-    window.openModal = (modalId) => document.getElementById(modalId).style.display = 'block';
-    window.closeModal = (modalId) => document.getElementById(modalId).style.display = 'none';
-
+        alert("Settings updated!");
+    }
 </script>
 </body>
 </html>
