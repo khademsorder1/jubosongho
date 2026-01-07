@@ -24,7 +24,6 @@
         .search-bar, .filter-bar select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box; }
         .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; }
         
-        /* নতুন ড্যাশবোর্ড স্টাইল */
         .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; text-align: center; margin-bottom: 20px; }
         .dashboard-card { background-color: #fff; border: 1px solid #eee; padding: 15px; border-radius: 10px; }
         .dashboard-card i { font-size: 1.8rem; color: var(--primary-color); margin-bottom: 8px; }
@@ -47,7 +46,6 @@
         .member-list .member-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; }
         .member-item img { width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
         
-        /* উন্নত রক্তদাতা কার্ড স্টাইল */
         #bloodList { display: grid; gap: 15px; }
         .donor-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; }
         .donor-header { display: flex; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 10px; }
@@ -68,6 +66,7 @@
         .info-table td { padding: 8px 5px; vertical-align: top;}
         .info-table td:first-child { font-weight: bold; width: 40%;}
         .data-list .data-item { padding: 10px; border-bottom: 1px solid #eee; }
+        .data-list .data-item small { color: var(--light-text); font-size: 0.85rem; }
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background-color: white; box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-around; padding: 8px 0; z-index: 100; }
         .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #95a5a6; font-size: 0.8rem; padding: 5px; cursor: pointer; flex-grow: 1; }
         .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
@@ -75,12 +74,11 @@
         .form-group { margin-bottom: 15px; text-align: left; }
         label { display: block; margin-bottom: 5px; font-weight: 500; }
         input, select, button, textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
-        button { background-color: var(--primary-color); color: white; border: none; cursor: pointer; font-size: 1rem; }
+        button { background-color: var(--primary-color); color: white; border: none; cursor: pointer; font-size: 1rem; padding: 12px; }
         .donation-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; }
         .donation-item img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; margin-right: 15px; }
         .donation-info h4 { margin: 0; } .donation-info p { margin: 5px 0 0; color: #666; }
         
-        /* নতুন অর্থায়ন পেজ স্টাইল */
         .finance-summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; text-align: center; }
         .finance-summary-card { padding: 15px; border-radius: 8px; color: white; }
         .finance-summary-card h4 { margin: 0 0 5px 0; font-size: 1rem; }
@@ -143,16 +141,16 @@
                     <div class="form-group"><label for="paymentMethod">পেমেন্ট মাধ্যম:</label>
                         <select id="paymentMethod" required>
                             <option value="">-- নির্বাচন করুন --</option>
-                            <option value="bKash">বিকাশ</option><option value="Nagad">নগদ</option><option value="Cash">ক্যাশ</option>
+                            <option value="বিকাশ">বিকাশ</option>
+                            <option value="নগদ">নগদ</option>
+                            <option value="ক্যাশ">ক্যাশ</option>
                         </select>
                     </div>
-                    <div class="form-group"><label for="donationPurpose">অনুদানর উদ্দেশ্য:</label>
+                    <div class="form-group"><label for="donationPurpose">অনুদানর উদ্দেশ্য (আয়ের খাত):</label>
                         <select id="donationPurpose" required>
                             <option value="">-- নির্বাচন করুন --</option>
                             <option value="সামাজিক উন্নয়ন">সামাজিক উন্নয়ন</option>
                             <option value="ঈদ অনুষ্ঠান">ঈদ অনুষ্ঠান</option>
-                            <option value="নামাজ/কুরআন শিক্ষা">নামাজ/কুরআন শিক্ষা</option>
-                            <option value="মাদ্রাসার এতিমদের জন্য">মাদ্রাসার এতিমদের জন্য</option>
                             <option value="খেলাধুলা আয়োজন">খেলাধুলা আয়োজন</option>
                             <option value="গরিব ও অসহায়দের সাহায্য">গরিব ও অসহায়দের সাহায্য</option>
                             <option value="সাধারণ তহবিল">সাধারণ তহবিল</option>
@@ -185,8 +183,12 @@
                 </div>
             </div>
             <div class="card">
-                <h2>খরচের খাত</h2>
+                <h2>খরচের খাত (ব্যয়ের খাত)</h2>
                 <canvas id="expensePieChart" width="400" height="300"></canvas>
+            </div>
+            <div class="card">
+                <h2>সাম্প্রতিক ব্যয়</h2>
+                <div id="latestExpensesList" class="data-list"><p>লোড হচ্ছে...</p></div>
             </div>
         </div>
         
@@ -217,6 +219,11 @@
              <div class="card">
                 <h2><i class="fas fa-history"></i> আমার ডোনেশন ইতিহাস</h2>
                 <div id="myDonationsList" class="data-list"><p>লোড হচ্ছে...</p></div>
+            </div>
+            <div class="card">
+                <h2><i class="fas fa-donate"></i> সংগঠনে অনুদান দিন</h2>
+                <p>আপনার অনুদান আমাদের কার্যক্রমকে এগিয়ে নিতে সাহায্য করবে।</p>
+                <button onclick="showPage('donation-form-section')">অনুদান পাঠান</button>
             </div>
         </div>
     </main>
@@ -340,10 +347,11 @@
             userId: currentUser.uid, userName, userImage,
             amount: Number(document.getElementById('donationAmount').value),
             paymentMethod: document.getElementById('paymentMethod').value,
-            purpose: document.getElementById('donationPurpose').value,
+            purposeKey: document.getElementById('donationPurpose').value, // Changed from purpose to purposeKey
             transactionInfo: document.getElementById('transactionId').value,
             proofImageUrl: proofImageUrl,
-            status: 'pending', submittedAt: new Date()
+            status: 'pending', submittedAt: new Date(),
+            date: new Date().toISOString().split('T')[0].split('-').reverse().join('-') // DD-MM-YYYY format
         };
         try {
             statusP.textContent = 'আপনার তথ্য জমা দেওয়া হচ্ছে...';
@@ -393,7 +401,6 @@
         }
     }
     
-    // সম্পূর্ণ ডেটা লোড করার জন্য প্রধান ফাংশন
     async function loadAllData() { 
         try { 
             const [membersSnapshot, donationsSnapshot, expensesSnapshot, noticesSnapshot, settingsSnapshot] = await Promise.all([
@@ -408,13 +415,11 @@
             allDonations = donationsSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
             allExpenses = expensesSnapshot.docs.map(e => ({ id: e.id, ...e.data() }));
             
-            // অন্যান্য পেজের ডেটা লোড করা
             loadHomeNotices(noticesSnapshot);
             loadPaymentNumbers(settingsSnapshot);
             loadMembers();
             populateMonthFilter();
             
-            // ড্যাশবোর্ড এবং চার্ট লোড করা
             updateDashboard();
             loadFinancePageData();
             loadBloodDonors();
@@ -427,7 +432,6 @@
         } 
     }
     
-    // মূল পেজের নোটিশ লোড
     function loadHomeNotices(snapshot) {
         const noticeBoard = document.getElementById('homeNoticeBoard');
         noticeBoard.innerHTML = '';
@@ -435,13 +439,12 @@
             noticeBoard.innerHTML = '<p>কোনো নতুন নোটিশ নেই।</p>';
             return;
         }
-        snapshot.docs.slice(0, 5).forEach(doc => { // Show latest 5 notices
+        snapshot.docs.slice(0, 5).forEach(doc => {
             const notice = doc.data();
-            noticeBoard.innerHTML += `<div class="notice-item"><h4>${notice.title}</h4><p>${new Date(notice.date).toLocaleDateString('bn-BD')}</p></div>`;
+            noticeBoard.innerHTML += `<div class="notice-item"><h4>${notice.title}</h4><p>${parseDate(notice.date).toLocaleDateString('bn-BD')}</p></div>`;
         });
     }
 
-    // পেমেন্ট নম্বর লোড
     function loadPaymentNumbers(docSnap) {
         const numbersDiv = document.getElementById('paymentNumbers');
         if (docSnap.exists()) {
@@ -457,14 +460,12 @@
         }
     }
 
-    // সদস্য তালিকা লোড
     function loadMembers() { 
         const list = document.getElementById('memberList'); 
         list.innerHTML = ''; 
         membersData.forEach(m => list.innerHTML += `<div class="member-item" onclick="showMemberDetails('${m.id}')"><img src="${m.img || 'https://via.placeholder.com/100'}" alt="${m.name}"><div>${m.name}</div></div>`); 
     }
     
-    // ডোনেশন তালিকা লোড
     window.loadDonations = function() {
         const sortBy = document.getElementById('donationSort').value;
         const list = document.getElementById('donationList');
@@ -485,7 +486,7 @@
                     <div class="donation-info"><h4>${data.name}</h4><p>মোট অনুদান: ৳${data.total.toLocaleString('bn-BD')}</p></div>
                 </div>`;
             });
-        } else { // Sort by 'latest'
+        } else {
             allDonations.forEach(d => {
                  const date = parseDate(d.date);
                  list.innerHTML += `<div class="donation-item">
@@ -493,7 +494,11 @@
                     <div class="donation-info">
                         <h4>${d.userName}</h4>
                         <p><strong>৳${Number(d.amount).toLocaleString('bn-BD')}</strong> - ${d.purposeKey || 'সাধারণ তহবিল'}</p>
-                        <p style="font-size: 0.8rem">${date ? date.toLocaleDateString('bn-BD') : 'N/A'}</p>
+                        <p style="font-size: 0.8rem; color: #333;">
+                            ${date ? date.toLocaleDateString('bn-BD') : 'N/A'}
+                            <span style="margin: 0 5px;">|</span>
+                            মাধ্যম: ${d.paymentMethod || 'N/A'}
+                        </p>
                     </div>
                  </div>`;
             });
@@ -502,10 +507,9 @@
 
     function parseDate(dateString) { if (!dateString || typeof dateString !== 'string') return null; let d = new Date(dateString); if (!isNaN(d.getTime())) return d; if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) { const p = dateString.split('-'); return new Date(p[2], p[1] - 1, p[0]); } return null; }
     
-    // অর্থায়ন পেজের জন্য মাস ফিল্টার তৈরি
     function populateMonthFilter() {
         const monthFilter = document.getElementById('financeMonthFilter');
-        monthFilter.innerHTML = '<option value="all">সর্বমোট হিসাব</option>'; // Reset filter
+        monthFilter.innerHTML = '<option value="all">সর্বমোট হিসাব</option>';
         const months = new Set();
         [...allDonations, ...allExpenses].forEach(item => {
             const date = parseDate(item.date);
@@ -521,7 +525,6 @@
         });
     }
 
-    // ড্যাশবোর্ড আপডেট ফাংশন (চার্ট ছাড়া)
     function updateDashboard() {
         document.getElementById('totalMembers').innerText = membersData.length;
         const totalDonationAmount = allDonations.reduce((sum, d) => sum + Number(d.amount), 0);
@@ -531,7 +534,6 @@
         document.getElementById('currentBalance').innerText = `৳${(totalDonationAmount - totalExpenseAmount).toLocaleString('bn-BD')}`;
     }
 
-    // অর্থায়ন পেজের ডেটা এবং পাই চার্ট
     window.loadFinancePageData = function() {
         const filter = document.getElementById('financeMonthFilter').value;
         const filteredDonations = filter === 'all' ? allDonations : allDonations.filter(d => parseDate(d.date)?.toISOString().startsWith(filter));
@@ -557,9 +559,23 @@
             data: { labels: Object.keys(expenseByCategory), datasets: [{ data: Object.values(expenseByCategory), backgroundColor: ['#e74c3c', '#3498db', '#9b59b6', '#f1c40f', '#2ecc71', '#1abc9c', '#e67e22'] }] },
             options: { responsive: true, maintainAspectRatio: false }
         });
+
+        // নতুন: ব্যয়ের তালিকা দেখানো
+        const expenseListDiv = document.getElementById('latestExpensesList');
+        expenseListDiv.innerHTML = '';
+        if(filteredExpenses.length === 0) {
+            expenseListDiv.innerHTML = '<p>এই মাসে কোনো ব্যয় নেই।</p>';
+        } else {
+            filteredExpenses.slice(0, 15).forEach(e => { // Show latest 15 expenses for the period
+                const date = parseDate(e.date);
+                expenseListDiv.innerHTML += `<div class="data-item">
+                    <p style="margin: 0;"><strong>৳${Number(e.amount).toLocaleString('bn-BD')}</strong> - ${e.purposeKey || 'অন্যান্য'}</p>
+                    <small>${date ? date.toLocaleDateString('bn-BD') : ''} | মাধ্যম: ${e.paymentMethod || 'N/A'}</small>
+                </div>`;
+            });
+        }
     }
 
-    // রক্তদানের যোগ্যতা নির্ণয়
     function isEligibleToDonate(lastDateStr) {
         if (!lastDateStr) return { eligible: true, nextDate: null };
         const lastDate = parseDate(lastDateStr);
@@ -574,7 +590,6 @@
         return { eligible: isEligible, nextDate: nextEligibleDate };
     }
 
-    // রক্তদাতার তালিকা লোড
     window.loadBloodDonors = function() {
         const groupFilter = document.getElementById('bloodGroupFilter').value;
         const eligibilityFilter = document.getElementById('bloodEligibilityFilter').value;
@@ -597,7 +612,6 @@
         });
     }
     
-    // আমার ডোনেশন ইতিহাস লোড
     async function loadMyDonations(userId) {
         const list = document.getElementById('myDonationsList');
         const userDonations = allDonations.filter(d => d.userId === userId);
@@ -612,13 +626,10 @@
         }
     }
 
-    // প্রোফাইল আপডেট
     document.getElementById('profileEditForm').addEventListener('submit', async (e) => { e.preventDefault(); const dob = document.getElementById('profileDob').value; const formattedDob = dob ? `${dob.split('-')[2]}-${dob.split('-')[1]}-${dob.split('-')[0]}` : ''; const updateData = { name: document.getElementById('profileName').value, phone: `+880${document.getElementById('profilePhone').value}`, blood: document.getElementById('profileBlood').value, dob: formattedDob, income: document.getElementById('profileIncome').value, location: document.getElementById('profileLocation').value, lastDonationDate: document.getElementById('lastDonationDate').value, isWillingToDonate: document.getElementById('isWillingToDonate').value === 'true', healthNotes: document.getElementById('healthNotes').value }; try { await updateDoc(doc(db, "members", currentUser.uid), updateData); alert("প্রোফাইল সফলভাবে আপডেট হয়েছে!"); location.reload(); } catch(error) { alert("আপডেট করতে সমস্যা হয়েছে: " + error.message); } });
     
-    // পেজ পরিবর্তন
     window.showPage = function(pageId) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(pageId)?.classList.add('active'); document.querySelectorAll('.nav-item').forEach(i => { i.classList.remove('active'); const attr = i.getAttribute('onclick'); if (attr && attr.includes(pageId)) i.classList.add('active'); }); window.scrollTo(0, 0); }
     
-    // ডোনেশন বিস্তারিত মডাল
     window.showDonationDetails = function(userId) {
         const userDons = allDonations.filter(d => d.userId === userId);
         const modalName = document.getElementById('donationModalName');
@@ -634,7 +645,6 @@
         }
     }
     
-    // ইউটিলিটি ফাংশন
     window.closeModal = (id) => document.getElementById(id).style.display = "none";
     window.openModal = (id) => document.getElementById(id).style.display = "block";
     window.filterList = (inputId, listSelector) => { const filter = document.getElementById(inputId).value.toLowerCase(); document.querySelectorAll(listSelector).forEach(item => { item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none"; }); }
