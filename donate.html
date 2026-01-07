@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অনুদান পাঠান - হিজলী দিঘাপাড়া যুব সংঘ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+        :root { --primary-color: #16a085; --light-gray: #f0f2f5; }
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: var(--light-gray); margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 20px auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--primary-color); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; }
+        input, select, button { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+        button { background-color: var(--primary-color); color: white; cursor: pointer; border: none; font-weight: bold; }
+        button:disabled { background-color: #aaa; }
+        #uploadStatus { display:none; color:#16a085; text-align:center; margin-top:10px; font-weight: bold; }
+        .home-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-donate"></i> সংগঠনে অনুদান পাঠান</h2>
+        <p>আমাদের কার্যক্রমকে সচল রাখতে আপনার অনুদান একান্ত কাম্য। নিচের নম্বরগুলোতে টাকা পাঠিয়ে আমাদের সাহায্য করতে পারেন।</p>
+        <div id="paymentNumbers" style="text-align: left; margin: 20px auto; max-width: 300px; padding: 10px; background: #f9f9f9; border-radius: 8px;"><p>লোড হচ্ছে...</p></div>
+        <p>টাকা পাঠানোর পর, অনুগ্রহ করে নিচের ফর্মটি পূরণ করে সাবমিট করুন।</p>
+        <form id="donationForm">
+            <div class="form-group"><label for="donatorName">আপনার নাম (প্রয়োজনে পরিবর্তন করুন):</label><input type="text" id="donatorName" required></div>
+            <div class="form-group"><label for="donationAmount">টাকার পরিমাণ:</label><input type="number" id="donationAmount" placeholder="কত টাকা পাঠিয়েছেন" required></div>
+            <div class="form-group"><label for="paymentMethod">পেমেন্ট মাধ্যম:</label>
+                <select id="paymentMethod" required>
+                    <option value="">-- নির্বাচন করুন --</option>
+                    <option value="bKash">বিকাশ</option><option value="Nagad">নগদ</option><option value="Cash">ক্যাশ</option>
+                </select>
+            </div>
+            <div class="form-group"><label for="transactionId">মোবাইল নম্বর / TrxID / তথ্য:</label><input type="text" id="transactionId" placeholder="নম্বর / TrxID / যার মাধ্যমে দিয়েছেন" required></div>
+            <div class="form-group"><label for="proofPhoto">পেমেন্টের প্রমাণ (ঐচ্ছিক):</label><input type="file" id="proofPhoto" accept="image/*"></div>
+            <button type="submit" id="submitBtn">সাবমিট করুন</button>
+            <p id="uploadStatus"></p>
+        </form>
+        <a href="user.html" class="home-link"><i class="fas fa-home"></i> হোম পেজে ফিরে যান</a>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyDerc9e0-e7WBnkK2GoinFejp7zszXJ3Jc", authDomain: "songho-8ef5c.firebaseapp.com", projectId: "songho-8ef5c", storageBucket: "songho-8ef5c.appspot.com", messagingSenderId: "489031747232", appId: "1:489031747232:web:4c1cde63dabaa620ed2bc5", measurementId: "G-5NY15E3XJJ" };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dy7sxczfo/image/upload';
+    const CLOUDINARY_UPLOAD_PRESET = 'songho_preset';
+    
+    let currentUser = null;
+
+    async function loadPaymentNumbers() {
+        const paymentDiv = document.getElementById('paymentNumbers');
+        try {
+            const docSnap = await getDoc(doc(db, "settings", "paymentInfo"));
+            if(docSnap.exists()){
+                const data = docSnap.data();
+                paymentDiv.innerHTML = `<p><strong>বিকাশ:</strong> ${data.bkashNumber || 'N/A'}</p><p><strong>নগদ:</strong> ${data.nagadNumber || 'N/A'}</p><p><strong>ক্যাশ:</strong> ${data.cashInfo || 'সরাসরি জমা দিন'}</p>`;
+            }
+        } catch(e){ paymentDiv.innerHTML = "<p>নম্বর লোড করা সম্ভব হয়নি।</p>"; }
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+        const nameInput = document.getElementById('donatorName');
+        if (user && !user.isAnonymous) {
+            currentUser = user;
+            const userDoc = await getDoc(doc(db, "members", user.uid));
+            if (userDoc.exists()) {
+                nameInput.value = userDoc.data().name;
+            } else {
+                nameInput.value = "Registered User";
+            }
+        } else {
+            currentUser = user; // Could be guest or null
+            nameInput.value = "অতিথি";
+        }
+        loadPaymentNumbers();
+    });
+
+    document.getElementById('donationForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('submitBtn');
+        const uploadStatus = document.getElementById('uploadStatus');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'সাবমিট হচ্ছে...';
+        uploadStatus.style.display = 'block';
+
+        let proofImageUrl = '';
+        const photoFile = document.getElementById('proofPhoto').files[0];
+
+        try {
+            if (photoFile) {
+                uploadStatus.textContent = 'ছবি আপলোড হচ্ছে...';
+                const formData = new FormData();
+                formData.append('file', photoFile);
+                formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+                const response = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Image upload failed');
+                const data = await response.json();
+                proofImageUrl = data.secure_url;
+            }
+
+            uploadStatus.textContent = 'তথ্য জমা দেওয়া হচ্ছে...';
+            
+            const donationData = {
+                userId: currentUser ? currentUser.uid : 'guest',
+                userName: document.getElementById('donatorName').value,
+                userImage: currentUser && !currentUser.isAnonymous ? (await getDoc(doc(db, "members", currentUser.uid))).data()?.img || '' : '',
+                amount: Number(document.getElementById('donationAmount').value),
+                paymentMethod: document.getElementById('paymentMethod').value,
+                transactionInfo: document.getElementById('transactionId').value,
+                proofImageUrl: proofImageUrl,
+                status: 'pending',
+                submittedAt: new Date()
+            };
+
+            await addDoc(collection(db, "pending_donations"), donationData);
+            uploadStatus.textContent = 'আপনার তথ্য সফলভাবে জমা হয়েছে। ধন্যবাদ!';
+            uploadStatus.style.color = 'green';
+            document.getElementById('donationForm').reset();
+            submitBtn.textContent = 'আবার সাবমিট করুন';
+            
+        } catch (error) {
+            alert("একটি সমস্যা হয়েছে: " + error.message);
+            uploadStatus.textContent = 'একটি সমস্যা হয়েছে, আবার চেষ্টা করুন।';
+            uploadStatus.style.color = 'red';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'সাবমিট করুন';
+        }
+    });
+</script>
+</body>
+</html>
