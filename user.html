@@ -69,6 +69,59 @@
         .finance-table th { background-color: #f2f2f2; }
         .finance-total td { font-weight: bold; }
         .notice-list .notice-item { padding: 10px; border-bottom: 1px solid #eee; }
+
+        /* Payment Methods Styling */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Default to single column for mobile */
+            gap: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* On wider screens, show two columns */
+        @media (min-width: 600px) {
+            .payment-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .payment-method-card {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .payment-method-card h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: var(--dark-text);
+        }
+        .payment-method-card .payment-number {
+            margin: 0 0 15px 0;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            background-color: #e8f5e9;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        .payment-method-card .payment-text {
+            font-size: 1rem;
+            color: var(--light-text);
+        }
+        .payment-method-card img.qr-code {
+            max-width: 160px;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -103,7 +156,7 @@
             <div id="donation-manual-section" class="card">
                 <h2><i class="fas fa-donate"></i> সংগঠনে অনুদান পাঠান</h2>
                 <p>আমাদের কার্যক্রমকে সচল রাখতে আপনার অনুদান একান্ত কাম্য। নিচের নম্বরগুলোতে টাকা পাঠিয়ে আমাদের সাহায্য করতে পারেন।</p>
-                <div id="paymentNumbers" style="text-align: left; margin: 20px auto; max-width: 300px;"><p>লোড হচ্ছে...</p></div>
+                <div id="paymentNumbers"><p>লোড হচ্ছে...</p></div>
                 <p style="border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px;">টাকা পাঠানোর পর, অনুগ্রহ করে নিচের ফর্মটি পূরণ করে সাবমিট করুন। আমরা আপনার অনুদানটি যাচাই করে ডোনেশন লিস্টে যুক্ত করে দেবো।</p>
                 <form id="donationVerificationForm">
                     <div class="form-group"><label for="donationAmount">টাকার পরিমাণ:</label><input type="number" id="donationAmount" placeholder="কত টাকা পাঠিয়েছেন" required></div>
@@ -257,16 +310,67 @@
         const paymentDiv = document.getElementById('paymentNumbers');
         try {
             const docSnap = await getDoc(doc(db, "settings", "paymentInfo"));
-            if(docSnap.exists()){
+            if (docSnap.exists() && docSnap.data()) {
                 const data = docSnap.data();
-                paymentDiv.innerHTML = `
-                    <p><strong>বিকাশ:</strong> ${data.bkashNumber || 'N/A'}</p>
-                    <p><strong>নগদ:</strong> ${data.nagadNumber || 'N/A'}</p>
-                    <p><strong>ক্যাশ:</strong> ${data.cashInfo || 'সরাসরি জমা দিন'}</p>`;
+                let html = '<div class="payment-grid">';
+    
+                // bKash Card
+                if (data.bkashNumber) {
+                    html += `
+                        <div class="payment-method-card">
+                            <h4>বিকাশ</h4>
+                            <p class="payment-number">${data.bkashNumber}</p>
+                            ${data.bkashQR ? `<img src="${data.bkashQR}" alt="bKash QR Code" class="qr-code">` : ''}
+                        </div>`;
+                }
+    
+                // Nagad Card
+                if (data.nagadNumber) {
+                    html += `
+                        <div class="payment-method-card">
+                            <h4>নগদ</h4>
+                            <p class="payment-number">${data.nagadNumber}</p>
+                            ${data.nagadQR ? `<img src="${data.nagadQR}" alt="Nagad QR Code" class="qr-code">` : ''}
+                        </div>`;
+                }
+                 
+                // Cash Info
+                if (data.cashInfo) {
+                     html += `
+                        <div class="payment-method-card">
+                            <h4>ক্যাশ</h4>
+                            <p class="payment-text">${data.cashInfo}</p>
+                        </div>`;
+                }
+    
+                html += '</div>';
+                paymentDiv.innerHTML = html;
             } else {
-                paymentDiv.innerHTML = "<p>পেমেন্ট নম্বর সেট করা হয়নি।</p>";
+                // This is a fallback in case firestore is not configured.
+                // Using the data from the screenshot and placeholder images.
+                paymentDiv.innerHTML = `
+                    <div class="payment-grid">
+                        <div class="payment-method-card">
+                            <h4>বিকাশ</h4>
+                            <p class="payment-number">01611173634</p>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=bkash" alt="bKash QR Code placeholder" class="qr-code">
+                        </div>
+                        <div class="payment-method-card">
+                            <h4>নগদ</h4>
+                            <p class="payment-number">01611173634</p>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=nagad" alt="Nagad QR Code placeholder" class="qr-code">
+                        </div>
+                        <div class="payment-method-card">
+                            <h4>ক্যাশ</h4>
+                            <p class="payment-text">সরাসরি ক্যাশ জমা দিন</p>
+                        </div>
+                    </div>
+                `;
             }
-        } catch(e){ paymentDiv.innerHTML = "<p>নম্বর লোড করা সম্ভব হয়নি।</p>"; }
+        } catch (e) {
+            console.error("Error loading payment info:", e);
+            paymentDiv.innerHTML = "<p style='color:red; text-align:center;'>পেমেন্ট তথ্য লোড করা সম্ভব হয়নি।</p>";
+        }
     }
 
     document.getElementById('donationVerificationForm').addEventListener('submit', async (e) => {
@@ -523,4 +627,4 @@
     }
 </script>
 </body>
-</html>```
+</html>
