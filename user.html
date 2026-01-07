@@ -34,7 +34,6 @@
         .card-blood .feature-card-v2-top, .card-blood button { background-color: #d32f2f; }
         .card-member .feature-card-v2-top, .card-member button { background-color: #6a1b9a; }
         .card-donate .feature-card-v2-top, .card-donate button { background-color: #3498db; }
-        .card-purpose .feature-card-v2-top, .card-purpose button { background-color: #2980b9; } 
         .member-list .member-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; }
         .member-item img { width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
         #bloodList { display: grid; gap: 15px; }
@@ -97,7 +96,6 @@
                 <div class="feature-card-v2 card-member" onclick="showPage('member-section')"><div class="feature-card-v2-top"><i class="fas fa-users"></i><h3>সদস্য তথ্য</h3></div><div class="feature-card-v2-bottom"><p>সদস্যদের তালিকা ও তথ্য</p><button>দেখুন</button></div></div>
                 <div class="feature-card-v2 card-chada" onclick="showPage('donation-section')"><div class="feature-card-v2-top"><i class="fas fa-hand-holding-heart"></i><h3>ডোনেশন লিস্ট</h3></div><div class="feature-card-v2-bottom"><p>সকল সদস্যদের অনুদান</p><button>দেখুন</button></div></div>
                 <div class="feature-card-v2 card-fee" onclick="showPage('finance-section')"><div class="feature-card-v2-top"><i class="fas fa-chart-line"></i><h3>আয়-ব্যয় হিসাব</h3></div><div class="feature-card-v2-bottom"><p>সংগঠনের মোট হিসাব</p><button>দেখুন</button></div></div>
-                <div class="feature-card-v2 card-purpose" onclick="showPage('purpose-donation-section')"><div class="feature-card-v2-top"><i class="fas fa-tasks"></i><h3>উদ্দেশ্যভিত্তিক হিসাব</h3></div><div class="feature-card-v2-bottom"><p>খাত অনুযায়ী অনুদান দেখুন</p><button>দেখুন</button></div></div>
                 <div class="feature-card-v2 card-blood" onclick="showPage('blood-section')"><div class="feature-card-v2-top"><i class="fas fa-droplet"></i><h3>ব্লাড গ্রুপ</h3></div><div class="feature-card-v2-bottom"><p>রক্তদাতার তালিকা</p><button>দেখুন</button></div></div>
                 <div class="feature-card-v2 card-donate" onclick="showPage('donation-form-section')"><div class="feature-card-v2-top"><i class="fas fa-donate"></i><h3>অনুদান পাঠান</h3></div><div class="feature-card-v2-bottom"><p>সংগঠনকে সাহায্য করুন</p><button>পাঠান</button></div></div>
             </div>
@@ -142,13 +140,6 @@
             </div>
         </div>
 
-        <div id="purpose-donation-section" class="page">
-            <h2><i class="fas fa-tasks"></i> উদ্দেশ্যভিত্তিক অনুদানের হিসাব</h2>
-            <div class="card" id="purposeDonationSummary">
-                <p>হিসাব লোড হচ্ছে...</p>
-            </div>
-        </div>
-
         <div id="member-section" class="page"><h2><i class="fas fa-users"></i> সদস্য তালিকা</h2><div class="card"><input type="text" id="memberSearch" class="search-bar" onkeyup="filterList('memberSearch', '#memberList .member-item')" placeholder="সদস্য খুঁজুন..."><div id="memberList" class="member-list"><p>লোড হচ্ছে...</p></div></div></div>
         <div id="donation-section" class="page"><h2><i class="fas fa-hand-holding-heart"></i> ডোনেশন তালিকা</h2><div class="card"><div class="filter-bar"><select id="donationSort" onchange="loadDonations()"><option value="latest">সর্বশেষ</option><option value="ranking">সর্বোচ্চ দাতা</option></select></div><div id="donationList" class="data-list"><p>লোড হচ্ছে...</p></div></div></div>
         <div id="finance-section" class="page"><h2><i class="fas fa-chart-line"></i> আয়-ব্যয় হিসাব</h2><div class="card"><div class="filter-bar"><select id="financeMonthFilter" onchange="loadFinanceData()"><option value="all">সর্বমোট হিসাব</option></select></div><div id="finance-summary"><p>লোড হচ্ছে...</p></div></div></div>
@@ -164,7 +155,7 @@
                 <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
                 <p id="photoUploadStatus" style="text-align:center; margin-top:10px;"></p>
                  <form id="profileEditForm">
-                     <div class="form-group"><label for="profileName">নাম:</label><input type="text" id="profileName" required></div>
+                    <div class="form-group"><label for="profileName">নাম:</label><input type="text" id="profileName" required></div>
                     <div class="form-group"><label for="profilePhone">মোবাইল:</label><input type="tel" id="profilePhone" placeholder="1xxxxxxxxx" required></div>
                     <div class="form-group"><label for="profileBlood">রক্তের গ্রুপ:</label><select id="profileBlood" required><option value="">-- নির্বাচন করুন --</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="O+">O+</option><option value="O-">O-</option><option value="AB+">AB+</option><option value="AB-">AB-</option></select></div>
                     <div class="form-group"><label for="profileDob">জন্ম তারিখ:</label><input type="date" id="profileDob" required></div>
@@ -176,10 +167,6 @@
                     <button type="submit">আপডেট করুন</button>
                  </form>
             </div>
-            <div class="card" id="userDonationHistory">
-                <h2><i class="fas fa-history"></i> আমার অনুদানের ইতিহাস</h2>
-                <div id="userDonationList"><p>লোড হচ্ছে...</p></div>
-            </div>
         </div>
     </main>
 
@@ -190,6 +177,8 @@
         <div class="nav-item active" onclick="showPage('home-section')"><i class="fas fa-home"></i><span>হোম</span></div>
         <div class="nav-item" onclick="showPage('member-section')"><i class="fas fa-users"></i><span>সদস্য</span></div>
         <div class="nav-item" onclick="showPage('donation-section')"><i class="fas fa-hand-holding-heart"></i><span>ডোনেশন</span></div>
+        <div class="nav-item" onclick="showPage('finance-section')"><i class="fas fa-calculator"></i><span>হিসাব</span></div>
+        <div class="nav-item" onclick="showPage('blood-section')"><i class="fas fa-heart"></i><span>রক্ত</span></div>
         <div class="nav-item" id="profileNavButton" onclick="showPage('profile-section')"><i class="fas fa-user-circle"></i><span>প্রোফাইল</span></div>
         <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>লগআউট</span></div>
     </nav>
@@ -199,10 +188,13 @@
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
     import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
     
-    const firebaseConfig = { apiKey: "AIzaSyDerc9e0-e7WBnk2GoinFejp7zszXJ3Jc", authDomain: "songho-8ef5c.firebaseapp.com", projectId: "songho-8ef5c", storageBucket: "songho-8ef5c.appspot.com", messagingSenderId: "489031747232", appId: "1:489031747232:web:4c1cde63dabaa620ed2bc5", measurementId: "G-5NY15E3XJJ" };
+    // Firebase Storage import is removed.
+
+    const firebaseConfig = { apiKey: "AIzaSyDerc9e0-e7WBnkK2GoinFejp7zszXJ3Jc", authDomain: "songho-8ef5c.firebaseapp.com", projectId: "songho-8ef5c", storageBucket: "songho-8ef5c.appspot.com", messagingSenderId: "489031747232", appId: "1:489031747232:web:4c1cde63dabaa620ed2bc5", measurementId: "G-5NY15E3XJJ" };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    // Firebase Storage initialization is removed.
     
     let currentUser = null;
     let membersData = [];
@@ -216,17 +208,12 @@
             if (user.isAnonymous) {
                 document.getElementById('profileNavButton').style.display = 'none';
                 document.getElementById('logoutBtn').innerHTML = '<i class="fas fa-sign-in-alt"></i><span>লগইন</span>';
-                document.getElementById('userDonationHistory').style.display = 'none';
             } else {
                 const docSnap = await getDoc(doc(db, "members", user.uid));
                 if (!docSnap.exists()) { window.location.replace('complete-profile.html'); return; }
                 loadProfileForEditing(docSnap.data());
-                document.getElementById('userDonationHistory').style.display = 'block';
             }
             await loadAllData();
-            if(!user.isAnonymous) {
-                displayUserDonationHistory();
-            }
             showPage('home-section'); 
             document.body.style.display = 'block';
         } else { window.location.replace('login.html'); }
@@ -235,28 +222,46 @@
     document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
     document.getElementById('profilePhotoInput').addEventListener('change', uploadProfilePhoto);
 
+    /**
+     * Helper function to upload a file to Cloudinary.
+     * @param {File} file The file to upload.
+     * @returns {Promise<string|null>} The secure URL of the uploaded image or null if failed.
+     */
     async function uploadToCloudinary(file) {
         const cloudName = 'dy7sxczfo';
         const uploadPreset = 'songho_preset';
         const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', uploadPreset);
+
         try {
-            const response = await fetch(url, { method: 'POST', body: formData });
-            if (!response.ok) throw new Error('Cloudinary upload failed');
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error('Cloudinary upload failed');
+            }
             const data = await response.json();
             return data.secure_url;
-        } catch (error) { console.error('Error uploading to Cloudinary:', error); return null; }
+        } catch (error) {
+            console.error('Error uploading to Cloudinary:', error);
+            return null;
+        }
     }
 
     async function uploadProfilePhoto(e) {
         const file = e.target.files[0];
         if (!file || !currentUser) return;
+        
         const statusP = document.getElementById('photoUploadStatus');
         statusP.textContent = 'ছবি আপলোড হচ্ছে...';
         statusP.style.color = '#16a085';
+
         const downloadURL = await uploadToCloudinary(file);
+
         if (downloadURL) {
             await updateDoc(doc(db, "members", currentUser.uid), { img: downloadURL });
             document.getElementById('profilePhoto').src = downloadURL;
@@ -268,76 +273,109 @@
         }
     }
 
-    async function loadAllData() {
-        try {
-            const donationsSnapshot = await getDocs(query(collection(db, "donations"), orderBy("date", "desc")));
-            allDonations = donationsSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    document.getElementById('donationVerificationForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitButton = e.target.querySelector('button');
+        submitButton.disabled = true;
+        submitButton.textContent = 'জমা হচ্ছে...';
+        const statusP = document.getElementById('donationFormStatus');
+        statusP.textContent = ''; // Clear previous status
 
-            await Promise.all([
-                loadPaymentNumbers(), 
-                loadHomeNotices(), 
-                loadMembers(),
-                loadFinanceData(), // Needs donation data
-                loadDonations(), // Needs donation data
-                loadPurposeDonationSummary() // Needs donation data
-            ]);
-        } catch (error) { 
-            console.error("Error loading data:", error); 
-        }
-    }
-    
-    function displayUserDonationHistory() {
-        if (!currentUser || currentUser.isAnonymous) return;
-        const historyContainer = document.getElementById('userDonationList');
-        const userDonations = allDonations.filter(d => d.userId === currentUser.uid);
-
-        if (userDonations.length === 0) {
-            historyContainer.innerHTML = '<p>আপনি এখনো কোনো অনুদান করেননি।</p>';
+        if (!currentUser) { 
+            alert("অনুগ্রহ করে প্রথমে লগইন করুন।"); 
+            submitButton.disabled = false; submitButton.textContent = 'সাবমিট করুন';
             return;
         }
         
-        let totalDonated = userDonations.reduce((sum, d) => sum + Number(d.amount), 0);
-        let html = '<table class="finance-table"><thead><tr><th>তারিখ</th><th>উদ্দেশ্য</th><th>টাকা</th></tr></thead><tbody>';
-        userDonations.forEach(donation => {
-            const donationDate = parseDate(donation.date);
-            html += `<tr><td>${donationDate ? donationDate.toLocaleDateString('bn-BD') : 'N/A'}</td><td>${donation.purpose || 'N/A'}</td><td>${Number(donation.amount).toLocaleString('bn-BD')}</td></tr>`;
-        });
-        html += '</tbody><tfoot class="finance-total"><tr><td colspan="2">আপনার মোট অনুদান</td><td>' + totalDonated.toLocaleString('bn-BD') + '</td></tr></tfoot></table>';
-        historyContainer.innerHTML = html;
-    }
+        const proofFile = document.getElementById('paymentProof').files[0];
+        let proofImageUrl = null;
 
-    function loadPurposeDonationSummary() {
-        const summaryContainer = document.getElementById('purposeDonationSummary');
-        if (allDonations.length === 0) {
-            summaryContainer.innerHTML = '<p>এখনো কোনো অনুদান জমা হয়নি।</p>';
-            return;
+        if (proofFile) {
+            statusP.textContent = 'প্রমাণের ছবি আপলোড হচ্ছে...';
+            proofImageUrl = await uploadToCloudinary(proofFile);
+            if (!proofImageUrl) {
+                statusP.textContent = 'প্রমাণের ছবি আপলোড করা যায়নি। আবার চেষ্টা করুন।'; 
+                statusP.style.color = 'red';
+                submitButton.disabled = false; 
+                submitButton.textContent = 'সাবমিট করুন';
+                return;
+            }
         }
-        const summary = allDonations.reduce((acc, donation) => {
-            const purpose = donation.purpose || 'অনির্ধারিত';
-            acc[purpose] = (acc[purpose] || 0) + Number(donation.amount);
-            return acc;
-        }, {});
-        const sortedSummary = Object.entries(summary).sort(([, a], [, b]) => b - a);
-        let totalAmount = sortedSummary.reduce((sum, [, amount]) => sum + amount, 0);
-        let html = '<table class="finance-table"><thead><tr><th>উদ্দেশ্য / খাত</th><th>মোট টাকা</th></tr></thead><tbody>';
-        sortedSummary.forEach(([purpose, amount]) => {
-            html += `<tr><td>${purpose}</td><td>${amount.toLocaleString('bn-BD')}</td></tr>`;
-        });
-        html += '</tbody><tfoot class="finance-total"><tr><td>সর্বমোট</td><td>' + totalAmount.toLocaleString('bn-BD') + '</td></tr></tfoot></table>';
-        summaryContainer.innerHTML = html;
+        
+        let userName = "অতিথি", userImage = "https://via.placeholder.com/50";
+        if (!currentUser.isAnonymous) {
+            const userDoc = await getDoc(doc(db, "members", currentUser.uid));
+            if (userDoc.exists()) { userName = userDoc.data().name; userImage = userDoc.data().img; }
+        }
+
+        const data = {
+            userId: currentUser.uid, userName, userImage,
+            amount: Number(document.getElementById('donationAmount').value),
+            paymentMethod: document.getElementById('paymentMethod').value,
+            purpose: document.getElementById('donationPurpose').value,
+            transactionInfo: document.getElementById('transactionId').value,
+            proofImageUrl: proofImageUrl, // Can be null if no file was uploaded
+            status: 'pending', submittedAt: new Date()
+        };
+
+        try {
+            statusP.textContent = 'আপনার তথ্য জমা দেওয়া হচ্ছে...';
+            await addDoc(collection(db, "pending_donations"), data);
+            statusP.textContent = 'আপনার তথ্য জমা হয়েছে। যাচাই করে ডোনেশন লিস্টে যুক্ত করা হবে।'; 
+            statusP.style.color = '#16a085';
+            e.target.reset();
+        } catch (error) { 
+            statusP.textContent = 'একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।'; 
+            statusP.style.color = 'red'; 
+        } finally { 
+            submitButton.disabled = false; 
+            submitButton.textContent = 'সাবমিট করুন'; 
+        }
+    });
+
+    function loadProfileForEditing(data) {
+        document.getElementById('profilePhoto').src = data.img || 'https://via.placeholder.com/150';
+        document.getElementById('profileName').value = data.name || '';
+        document.getElementById('profilePhone').value = data.phone.startsWith('+880') ? data.phone.substring(4) : data.phone;
+        document.getElementById('profileBlood').value = data.blood || '';
+        document.getElementById('profileIncome').value = data.income || '';
+        document.getElementById('profileLocation').value = data.location || '';
+        document.getElementById('lastDonationDate').value = data.lastDonationDate || '';
+        document.getElementById('isWillingToDonate').value = data.isWillingToDonate !== undefined ? String(data.isWillingToDonate) : 'true';
+        document.getElementById('healthNotes').value = data.healthNotes || '';
+        if (data.dob) {
+            const parts = data.dob.split('-');
+            if (parts.length === 3 && parts[2].length === 4) { document.getElementById('profileDob').value = `${parts[2]}-${parts[1]}-${parts[0]}`; }
+        }
+    }
+    
+    window.showMemberDetails = function(id) {
+        const member = membersData.find(m => m.id === id);
+        if (member) {
+            document.getElementById('modalImg').src = member.img || 'https://via.placeholder.com/100';
+            document.getElementById('modalName').innerText = member.name || 'N/A';
+            document.getElementById('modalDob').innerText = member.dob || 'N/A';
+            document.getElementById('modalPhone').innerText = member.phone || 'N/A';
+            document.getElementById('modalBlood').innerText = member.blood || 'N/A';
+            document.getElementById('modalIncome').innerText = member.income || 'N/A';
+            document.getElementById('modalLocation').innerText = member.location || 'N/A';
+            const lastDonationDate = member.lastDonationDate ? parseDate(member.lastDonationDate) : null;
+            document.getElementById('modalLastDonation').innerText = lastDonationDate ? lastDonationDate.toLocaleDateString('bn-BD') : 'N/A';
+            document.getElementById('modalWilling').innerText = member.isWillingToDonate ? 'হ্যাঁ' : 'না';
+            openModal('memberModal');
+        }
     }
 
-    document.getElementById('donationVerificationForm').addEventListener('submit', async (e) => { e.preventDefault(); const btn=e.target.querySelector('button'); btn.disabled=true; btn.textContent='জমা হচ্ছে...'; const statusP=document.getElementById('donationFormStatus'); statusP.textContent=''; if(!currentUser){alert("লগইন করুন।");btn.disabled=false;btn.textContent='সাবমিট করুন';return;} const file=document.getElementById('paymentProof').files[0]; let url=null; if(file){statusP.textContent='ছবি আপলোড হচ্ছে...';url=await uploadToCloudinary(file);if(!url){statusP.textContent='ছবি আপলোড করা যায়নি।';statusP.style.color='red';btn.disabled=false;btn.textContent='সাবমিট করুন';return;}} let userName="অতিথি",userImage="https://via.placeholder.com/50"; if(!currentUser.isAnonymous){const docSnap=await getDoc(doc(db,"members",currentUser.uid));if(docSnap.exists()){userName=docSnap.data().name;userImage=docSnap.data().img;}} const data={userId:currentUser.uid,userName,userImage,amount:Number(document.getElementById('donationAmount').value),paymentMethod:document.getElementById('paymentMethod').value,purpose:document.getElementById('donationPurpose').value,transactionInfo:document.getElementById('transactionId').value,proofImageUrl:url,status:'pending',submittedAt:new Date()}; try{statusP.textContent='তথ্য জমা দেওয়া হচ্ছে...';await addDoc(collection(db,"pending_donations"),data);statusP.textContent='আপনার তথ্য জমা হয়েছে।';statusP.style.color='#16a085';e.target.reset();}catch(err){statusP.textContent='একটি সমস্যা হয়েছে।';statusP.style.color='red';}finally{btn.disabled=false;btn.textContent='সাবমিট করুন';} });
-    function loadProfileForEditing(data) { document.getElementById('profilePhoto').src = data.img || 'https://via.placeholder.com/150'; document.getElementById('profileName').value = data.name || ''; document.getElementById('profilePhone').value = data.phone.startsWith('+880') ? data.phone.substring(4) : data.phone; document.getElementById('profileBlood').value = data.blood || ''; document.getElementById('profileIncome').value = data.income || ''; document.getElementById('profileLocation').value = data.location || ''; document.getElementById('lastDonationDate').value = data.lastDonationDate || ''; document.getElementById('isWillingToDonate').value = data.isWillingToDonate !== undefined ? String(data.isWillingToDonate) : 'true'; document.getElementById('healthNotes').value = data.healthNotes || ''; if (data.dob) { const parts = data.dob.split('-'); if (parts.length === 3 && parts[2].length === 4) { document.getElementById('profileDob').value = `${parts[2]}-${parts[1]}-${parts[0]}`; } } }
-    window.showMemberDetails = function(id) { const member = membersData.find(m => m.id === id); if (member) { document.getElementById('modalImg').src = member.img || 'https://via.placeholder.com/100'; document.getElementById('modalName').innerText = member.name || 'N/A'; document.getElementById('modalDob').innerText = member.dob || 'N/A'; document.getElementById('modalPhone').innerText = member.phone || 'N/A'; document.getElementById('modalBlood').innerText = member.blood || 'N/A'; document.getElementById('modalIncome').innerText = member.income || 'N/A'; document.getElementById('modalLocation').innerText = member.location || 'N/A'; const lastDonationDate = member.lastDonationDate ? parseDate(member.lastDonationDate) : null; document.getElementById('modalLastDonation').innerText = lastDonationDate ? lastDonationDate.toLocaleDateString('bn-BD') : 'N/A'; document.getElementById('modalWilling').innerText = member.isWillingToDonate ? 'হ্যাঁ' : 'না'; openModal('memberModal'); } }
+    // --- Other functions (unchanged from previous version) ---
+    async function loadAllData() { try { await Promise.all([loadPaymentNumbers(), loadHomeNotices(), loadMembers()]); const [donationsSnapshot, expensesSnapshot] = await Promise.all([getDocs(query(collection(db, "donations"), orderBy("date", "desc"))), getDocs(query(collection(db, "expenses"), orderBy("date", "desc")))]); allDonations = donationsSnapshot.docs.map(d => ({ id: d.id, ...d.data() })); allExpenses = expensesSnapshot.docs.map(e => ({ id: e.id, ...e.data() })); populateMonthFilter(); loadDonations(); loadFinanceData(); loadBloodDonors(); } catch (error) { console.error("Error loading data:", error); } }
     async function loadPaymentNumbers() { /* ... unchanged ... */ }
     async function loadHomeNotices() { /* ... unchanged ... */ }
     async function loadMembers() { const q = await getDocs(collection(db, "members")); membersData = q.docs.map(d => ({ id: d.id, ...d.data() })); const list = document.getElementById('memberList'); list.innerHTML = ''; membersData.forEach(m => list.innerHTML += `<div class="member-item" onclick="showMemberDetails('${m.id}')"><img src="${m.img || 'https://via.placeholder.com/100'}" alt="${m.name}"><div>${m.name}</div></div>`); }
-    function loadDonations() { /* ... unchanged ... */ }
+    window.loadDonations = function() { /* ... unchanged ... */ }
     function parseDate(dateString) { if (!dateString || typeof dateString !== 'string') return null; let d = new Date(dateString); if (!isNaN(d.getTime())) return d; if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) { const p = dateString.split('-'); return new Date(p[2], p[1] - 1, p[0]); } return null; }
     function populateMonthFilter() { /* ... unchanged ... */ }
-    function loadFinanceData() { /* ... unchanged ... */ }
-    function loadBloodDonors() { /* ... unchanged ... */ }
+    window.loadFinanceData = function() { /* ... unchanged ... */ }
+    window.loadBloodDonors = function() { /* ... unchanged ... */ }
     function isEligibleToDonate(lastDateStr) { if(!lastDateStr) return true; const lastDate = parseDate(lastDateStr); if(!lastDate) return true; return (new Date() - lastDate) / (1000 * 60 * 60 * 24) > 120; }
     document.getElementById('profileEditForm').addEventListener('submit', async (e) => { e.preventDefault(); const dob = document.getElementById('profileDob').value; const formattedDob = dob ? `${dob.split('-')[2]}-${dob.split('-')[1]}-${dob.split('-')[0]}` : ''; const updateData = { name: document.getElementById('profileName').value, phone: `+880${document.getElementById('profilePhone').value}`, blood: document.getElementById('profileBlood').value, dob: formattedDob, income: document.getElementById('profileIncome').value, location: document.getElementById('profileLocation').value, lastDonationDate: document.getElementById('lastDonationDate').value, isWillingToDonate: document.getElementById('isWillingToDonate').value === 'true', healthNotes: document.getElementById('healthNotes').value }; try { await updateDoc(doc(db, "members", currentUser.uid), updateData); alert("প্রোফাইল সফলভাবে আপডেট হয়েছে!"); location.reload(); } catch(error) { alert("আপডেট করতে সমস্যা হয়েছে: " + error.message); } });
     window.showPage = function(pageId) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(pageId)?.classList.add('active'); document.querySelectorAll('.nav-item').forEach(i => { i.classList.remove('active'); const attr = i.getAttribute('onclick'); if (attr && attr.includes(pageId)) i.classList.add('active'); }); window.scrollTo(0, 0); }
