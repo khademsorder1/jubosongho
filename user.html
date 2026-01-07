@@ -33,7 +33,6 @@
         .card-fee .feature-card-v2-top, .card-fee button { background-color: #689f38; }
         .card-blood .feature-card-v2-top, .card-blood button { background-color: #d32f2f; }
         .card-member .feature-card-v2-top, .card-member button { background-color: #6a1b9a; }
-        /* নতুন ডোনেট কার্ডের জন্য স্টাইল */
         .card-donate .feature-card-v2-top, .card-donate button { background-color: #3498db; }
         .member-list .member-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee; cursor: pointer; }
         .member-item img { width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
@@ -69,59 +68,13 @@
         .finance-table th { background-color: #f2f2f2; }
         .finance-total td { font-weight: bold; }
         .notice-list .notice-item { padding: 10px; border-bottom: 1px solid #eee; }
-
-        /* Payment Methods Styling */
-        .payment-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Default to single column for mobile */
-            gap: 15px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        /* On wider screens, show two columns */
-        @media (min-width: 600px) {
-            .payment-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .payment-method-card {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .payment-method-card h4 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            color: var(--dark-text);
-        }
-        .payment-method-card .payment-number {
-            margin: 0 0 15px 0;
-            font-weight: 600;
-            font-size: 1.3rem;
-            color: var(--primary-color);
-            background-color: #e8f5e9;
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-        .payment-method-card .payment-text {
-            font-size: 1rem;
-            color: var(--light-text);
-        }
-        .payment-method-card img.qr-code {
-            max-width: 160px;
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            border: 2px solid #ddd;
-        }
+        .payment-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin: 20px 0; text-align: center; }
+        @media (min-width: 600px) { .payment-grid { grid-template-columns: repeat(2, 1fr); } }
+        .payment-method-card { background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .payment-method-card h4 { margin-top: 0; margin-bottom: 10px; font-size: 1.2rem; color: var(--dark-text); }
+        .payment-method-card .payment-number { margin: 0 0 15px 0; font-weight: 600; font-size: 1.3rem; color: var(--primary-color); background-color: #e8f5e9; padding: 5px 15px; border-radius: 20px; }
+        .payment-method-card .payment-text { font-size: 1rem; color: var(--light-text); }
+        .payment-method-card img.qr-code { max-width: 160px; width: 100%; height: auto; border-radius: 8px; border: 2px solid #ddd; }
     </style>
 </head>
 <body>
@@ -141,8 +94,8 @@
                 <div class="feature-card-v2 card-chada" onclick="showPage('donation-section')"><div class="feature-card-v2-top"><i class="fas fa-hand-holding-heart"></i><h3>ডোনেশন লিস্ট</h3></div><div class="feature-card-v2-bottom"><p>সকল সদস্যদের অনুদান</p><button>দেখুন</button></div></div>
                 <div class="feature-card-v2 card-fee" onclick="showPage('finance-section')"><div class="feature-card-v2-top"><i class="fas fa-chart-line"></i><h3>আয়-ব্যয় হিসাব</h3></div><div class="feature-card-v2-bottom"><p>সংগঠনের মোট হিসাব</p><button>দেখুন</button></div></div>
                 <div class="feature-card-v2 card-blood" onclick="showPage('blood-section')"><div class="feature-card-v2-top"><i class="fas fa-droplet"></i><h3>ব্লাড গ্রুপ</h3></div><div class="feature-card-v2-bottom"><p>রক্তদাতার তালিকা</p><button>দেখুন</button></div></div>
-                <!-- নতুন ডোনেট কার্ড -->
-                <div class="feature-card-v2 card-donate" onclick="document.getElementById('donation-manual-section').scrollIntoView({ behavior: 'smooth' });">
+                <!-- ডোনেট কার্ড, এখন একটি নতুন পেজে নিয়ে যাবে -->
+                <div class="feature-card-v2 card-donate" onclick="showPage('donation-form-section')">
                     <div class="feature-card-v2-top">
                         <i class="fas fa-donate"></i>
                         <h3>অনুদান পাঠান</h3>
@@ -153,7 +106,15 @@
                     </div>
                 </div>
             </div>
-            <div id="donation-manual-section" class="card">
+            <div class="card">
+                <h2><i class="fas fa-bell"></i> সাম্প্রতিক নোটিশ</h2>
+                <div id="homeNoticeBoard" class="notice-list"><p>লোড হচ্ছে...</p></div>
+            </div>
+        </div>
+
+        <!-- NEW: Donation Form Page -->
+        <div id="donation-form-section" class="page">
+            <div class="card">
                 <h2><i class="fas fa-donate"></i> সংগঠনে অনুদান পাঠান</h2>
                 <p>আমাদের কার্যক্রমকে সচল রাখতে আপনার অনুদান একান্ত কাম্য। নিচের নম্বরগুলোতে টাকা পাঠিয়ে আমাদের সাহায্য করতে পারেন।</p>
                 <div id="paymentNumbers"><p>লোড হচ্ছে...</p></div>
@@ -171,11 +132,8 @@
                     <p id="donationFormStatus" style="display:none; color:#16a085; text-align:center; margin-top:10px;"></p>
                 </form>
             </div>
-            <div class="card">
-                <h2><i class="fas fa-bell"></i> সাম্প্রতিক নোটিশ</h2>
-                <div id="homeNoticeBoard" class="notice-list"><p>লোড হচ্ছে...</p></div>
-            </div>
         </div>
+
         <div id="member-section" class="page"><h2><i class="fas fa-users"></i> সদস্য তালিকা</h2><div class="card"><input type="text" id="memberSearch" class="search-bar" onkeyup="filterList('memberSearch', '#memberList .member-item')" placeholder="সদস্য খুঁজুন..."><div id="memberList" class="member-list"><p>লোড হচ্ছে...</p></div></div></div>
         <div id="donation-section" class="page">
             <h2><i class="fas fa-hand-holding-heart"></i> ডোনেশন তালিকা</h2>
@@ -314,58 +272,20 @@
                 const data = docSnap.data();
                 let html = '<div class="payment-grid">';
     
-                // bKash Card
                 if (data.bkashNumber) {
-                    html += `
-                        <div class="payment-method-card">
-                            <h4>বিকাশ</h4>
-                            <p class="payment-number">${data.bkashNumber}</p>
-                            ${data.bkashQR ? `<img src="${data.bkashQR}" alt="bKash QR Code" class="qr-code">` : ''}
-                        </div>`;
+                    html += `<div class="payment-method-card"><h4>বিকাশ</h4><p class="payment-number">${data.bkashNumber}</p>${data.bkashQR ? `<img src="${data.bkashQR}" alt="bKash QR Code" class="qr-code">` : ''}</div>`;
                 }
-    
-                // Nagad Card
                 if (data.nagadNumber) {
-                    html += `
-                        <div class="payment-method-card">
-                            <h4>নগদ</h4>
-                            <p class="payment-number">${data.nagadNumber}</p>
-                            ${data.nagadQR ? `<img src="${data.nagadQR}" alt="Nagad QR Code" class="qr-code">` : ''}
-                        </div>`;
+                    html += `<div class="payment-method-card"><h4>নগদ</h4><p class="payment-number">${data.nagadNumber}</p>${data.nagadQR ? `<img src="${data.nagadQR}" alt="Nagad QR Code" class="qr-code">` : ''}</div>`;
                 }
-                 
-                // Cash Info
                 if (data.cashInfo) {
-                     html += `
-                        <div class="payment-method-card">
-                            <h4>ক্যাশ</h4>
-                            <p class="payment-text">${data.cashInfo}</p>
-                        </div>`;
+                     html += `<div class="payment-method-card"><h4>ক্যাশ</h4><p class="payment-text">${data.cashInfo}</p></div>`;
                 }
     
                 html += '</div>';
                 paymentDiv.innerHTML = html;
             } else {
-                // This is a fallback in case firestore is not configured.
-                // Using the data from the screenshot and placeholder images.
-                paymentDiv.innerHTML = `
-                    <div class="payment-grid">
-                        <div class="payment-method-card">
-                            <h4>বিকাশ</h4>
-                            <p class="payment-number">01611173634</p>
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=bkash" alt="bKash QR Code placeholder" class="qr-code">
-                        </div>
-                        <div class="payment-method-card">
-                            <h4>নগদ</h4>
-                            <p class="payment-number">01611173634</p>
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=nagad" alt="Nagad QR Code placeholder" class="qr-code">
-                        </div>
-                        <div class="payment-method-card">
-                            <h4>ক্যাশ</h4>
-                            <p class="payment-text">সরাসরি ক্যাশ জমা দিন</p>
-                        </div>
-                    </div>
-                `;
+                paymentDiv.innerHTML = `<div class="payment-grid"><div class="payment-method-card"><h4>বিকাশ</h4><p class="payment-number">01611173634</p></div><div class="payment-method-card"><h4>নগদ</h4><p class="payment-number">01611173634</p></div><div class="payment-method-card"><h4>ক্যাশ</h4><p class="payment-text">সরাসরি ক্যাশ জমা দিন</p></div></div>`;
             }
         } catch (e) {
             console.error("Error loading payment info:", e);
@@ -405,14 +325,16 @@
 
     async function loadHomeNotices() {
         const noticeBoard = document.getElementById('homeNoticeBoard');
-        const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        noticeBoard.innerHTML = '';
-        if (querySnapshot.empty) { noticeBoard.innerHTML = '<p>কোনো নতুন নোটিশ নেই।</p>'; return; }
-        querySnapshot.forEach(doc => {
-            const notice = doc.data();
-            noticeBoard.innerHTML += `<div class="notice-item"><h4>${notice.title}</h4><p>${notice.details}</p></div>`;
-        });
+        try {
+            const q = query(collection(db, "notices"), orderBy("createdAt", "desc"));
+            const querySnapshot = await getDocs(q);
+            noticeBoard.innerHTML = '';
+            if (querySnapshot.empty) { noticeBoard.innerHTML = '<p>কোনো নতুন নোটিশ নেই।</p>'; return; }
+            querySnapshot.forEach(doc => {
+                const notice = doc.data();
+                noticeBoard.innerHTML += `<div class="notice-item"><h4>${notice.title}</h4><p>${notice.details}</p></div>`;
+            });
+        } catch(e) { noticeBoard.innerHTML = '<p>নোটিশ লোড করা সম্ভব হয়নি।</p>'; }
     }
 
     async function loadMembers() {
@@ -588,6 +510,7 @@
             const onclickAttr = item.getAttribute('onclick');
             if (onclickAttr && onclickAttr.includes(pageId)) item.classList.add('active');
         });
+        window.scrollTo(0, 0); // Scroll to top on page change
     }
     
     window.showMemberDetails = function(id) {
