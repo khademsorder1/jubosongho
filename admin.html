@@ -23,14 +23,17 @@
         .dashboard-card i { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 10px; }
         .dashboard-card h3 { margin: 0; font-size: 1.5rem; }
         .dashboard-card p { margin: 5px 0 0; color: #666; }
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .table-container { overflow-x: auto; background: white; padding: 15px; border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
         td img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
         .proof-link { color: var(--primary-color); text-decoration: none; font-weight: bold; }
-        .btn { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; color: white; }
+        .btn { padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; color: white; margin: 2px; }
         .btn-success { background-color: #27ae60; }
         .btn-danger { background-color: #e74c3c; }
+        .form-group { margin-bottom: 15px; }
+        input, select, textarea, button { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; box-sizing: border-box; }
+        button.btn-primary { background-color: var(--secondary-color); color: white; }
     </style>
 </head>
 <body>
@@ -55,124 +58,91 @@
                     <div class="dashboard-card" id="blood-stats-card"><p>লোড হচ্ছে...</p></div>
                 </div>
             </div>
-            <div id="pendingDonations" class="page">
-                <h2><i class="fas fa-hourglass-half"></i> অপেক্ষারত ডোনেশন</h2>
-                <div class="table-container"><table><thead><tr><th>ছবি</th><th>নাম</th><th>পরিমাণ</th><th>মাধ্যম</th><th>প্রমাণ</th><th>অ্যাকশন</th></tr></thead><tbody id="pending-donation-table-body"></tbody></table></div>
-            </div>
-            <div id="donations" class="page">
-                <h2><i class="fas fa-hand-holding-heart"></i> ডোনেশন পরিচালনা</h2>
-                <div class="table-container"><table><thead><tr><th>ছবি</th><th>নাম</th><th>পরিমাণ</th><th>তারিখ</th><th>মাধ্যম</th><th>উদ্দেশ্য</th><th>অ্যাকশন</th></tr></thead><tbody id="donation-table-body"></tbody></table></div>
-            </div>
-             <!-- Other pages will go here -->
+            <div id="pendingDonations" class="page"><h2>অপেক্ষারত ডোনেশন</h2><div class="table-container"><table id="pending-donations-table"><thead><tr><th>ছবি</th><th>নাম</th><th>পরিমাণ</th><th>মাধ্যম</th><th>প্রমাণ</th><th>অ্যাকশন</th></tr></thead><tbody></tbody></table></div></div>
+            <div id="donations" class="page"><h2>ডোনেশন পরিচালনা</h2><div class="table-container"><table id="donations-table"><thead><tr><th>ছবি</th><th>নাম</th><th>পরিমাণ</th><th>তারিখ</th><th>মাধ্যম</th><th>উদ্দেশ্য</th><th>অ্যাকশন</th></tr></thead><tbody></tbody></table></div></div>
+            <div id="expenses" class="page"><h2>ব্যয় পরিচালনা</h2><div class="table-container"><table id="expenses-table"><thead><tr><th>খাত</th><th>পরিমাণ</th><th>তারিখ</th><th>অ্যাকশন</th></tr></thead><tbody></tbody></table></div></div>
+            <div id="members" class="page"><h2>সদস্য পরিচালনা</h2><div class="table-container"><table id="members-table"><thead><tr><th>ছবি</th><th>নাম</th><th>মোবাইল</th><th>রক্তের গ্রুপ</th><th>অ্যাকশন</th></tr></thead><tbody></tbody></table></div></div>
+            <div id="notices" class="page"><h2>নোটিশ পরিচালনা</h2><div id="notice-management"></div></div>
+            <div id="settings" class="page"><h2>সেটিংস</h2><div id="settings-management"></div></div>
         </main>
     </div>
     
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, addDoc, deleteDoc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, addDoc, deleteDoc, setDoc, query, orderBy, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
     const firebaseConfig = { apiKey: "AIzaSyDerc9e0-e7WBnkK2GoinFejp7zszXJ3Jc", authDomain: "songho-8ef5c.firebaseapp.com", projectId: "songho-8ef5c", storageBucket: "songho-8ef5c.appspot.com", messagingSenderId: "489031747232", appId: "1:489031747232:web:4c1cde63dabaa620ed2bc5", measurementId: "G-5NY15E3XJJ" };
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     
+    let isDataLoaded = {}; // To track loaded data for each page
+    let allMembers = [], allDonations = [], allExpenses = [], allNotices = [];
     const donationPurposes = { "samajik": "সামাজিক উন্নয়ন", "khela": "খেলাধুলা", "mosjid": "মসজিদ উন্নয়ন" };
 
     document.addEventListener('DOMContentLoaded', () => {
         onAuthStateChanged(auth, user => {
-            if (user) { loadAllAdminData(); } else { window.location.href = 'admin-login.html'; }
+            if (user) { showPage('dashboard'); } else { window.location.href = 'admin-login.html'; }
         });
         document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', (e) => showPage(e.currentTarget.dataset.page)));
         document.getElementById('adminLogoutBtn').addEventListener('click', () => signOut(auth));
     });
 
-    async function loadAllAdminData() {
-        try {
-            const [membersSnapshot, donationsSnapshot, expensesSnapshot, pendingSnapshot] = await Promise.all([
-                getDocs(collection(db, "members")),
-                getDocs(query(collection(db, "donations"), orderBy("date", "desc"))),
-                getDocs(query(collection(db, "expenses"), orderBy("date", "desc"))),
-                getDocs(query(collection(db, "pending_donations"), where("status", "==", "pending")))
-            ]);
-            
-            const allMembers = membersSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-            const allDonations = donationsSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-            const allExpenses = expensesSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-            const pendingDonations = pendingSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-
-            loadDashboard(allMembers, allDonations, allExpenses);
-            loadAdminDonations(allDonations);
-            loadPendingDonations(pendingDonations);
-        } catch (error) { console.error("Failed to load admin data:", error); }
-    }
-
-    function loadDashboard(members, donations, expenses) {
-        document.getElementById('total-users-card').innerHTML = `<i class="fas fa-users"></i><h3>${members.length}</h3><p>মোট নিবন্ধিত সদস্য</p>`;
-        const totalIncome = donations.reduce((sum, d) => sum + Number(d.amount || 0), 0);
-        const totalExpense = expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
-        document.getElementById('finance-summary-card').innerHTML = `<i class="fas fa-chart-line"></i><h3>${(totalIncome - totalExpense).toLocaleString('bn-BD')} <span style="font-size:1rem;">টাকা</span></h3><p>বর্তমান ব্যালেন্স</p>`;
-        const totalDonors = members.filter(m => m.blood).length;
-        document.getElementById('blood-stats-card').innerHTML = `<i class="fas fa-tint"></i><h3>${totalDonors}</h3><p>মোট রক্তদাতার সংখ্যা</p>`;
-    }
-    
-    function loadAdminDonations(donations) {
-        const tbody = document.getElementById('donation-table-body');
-        tbody.innerHTML = donations.map(d => `<tr>
-            <td><img src="${d.userImage || 'https://via.placeholder.com/40'}" alt="${d.userName || ''}"></td>
-            <td>${d.userName || 'N/A'}</td><td>${d.amount.toLocaleString('bn-BD')}</td><td>${d.date ? new Date(d.date).toLocaleDateString('bn-BD') : 'N/A'}</td>
-            <td>${d.paymentMethod || ''}</td><td>${donationPurposes[d.purposeKey] || 'N/A'}</td>
-            <td><button class="btn btn-danger" onclick="deleteData('donations', '${d.id}')">Delete</button></td></tr>`).join('');
-    }
-
-    function loadPendingDonations(pending) {
-        const tbody = document.getElementById('pending-donation-table-body');
-        tbody.innerHTML = pending.map(d => {
-            const proofLink = d.proofImageUrl ? `<a href="${d.proofImageUrl}" target="_blank" class="proof-link">দেখুন</a>` : 'নেই';
-            return `<tr>
-                <td><img src="${d.userImage || 'https://via.placeholder.com/40'}" alt=""></td>
-                <td>${d.userName || 'N/A'}</td><td>${d.amount}</td><td>${d.paymentMethod || ''}</td><td>${proofLink}</td>
-                <td><button class="btn btn-success" onclick="approveDonation('${d.id}')">Approve</button>
-                    <button class="btn btn-danger" onclick="rejectDonation('${d.id}')">Reject</button></td></tr>`;
-        }).join('');
-    }
-    
-    window.approveDonation = async function(pendingId) {
-        const pendingDocRef = doc(db, "pending_donations", pendingId);
-        const pendingDocSnap = await getDoc(pendingDocRef);
-        if(!pendingDocSnap.exists()) return alert("Error: Donation not found.");
-        const data = pendingDocSnap.data();
-        const donationData = {
-            userId: data.userId, userName: data.userName, userImage: data.userImage,
-            amount: data.amount, paymentMethod: data.paymentMethod,
-            date: new Date().toISOString().split('T')[0] // YYYY-MM-DD
-        };
-        await addDoc(collection(db, "donations"), donationData);
-        await updateDoc(pendingDocRef, { status: "approved" });
-        alert("Donation approved!");
-        loadAllAdminData();
-    }
-    
-    window.rejectDonation = async function(pendingId) {
-        if(!confirm("Are you sure?")) return;
-        await updateDoc(doc(db, "pending_donations", pendingId), { status: "rejected" });
-        alert("Donation rejected.");
-        loadAllAdminData();
-    }
-    
-    window.deleteData = async function(collectionName, docId) {
-        if(!confirm("Are you sure?")) return;
-        await deleteDoc(doc(db, collectionName, docId));
-        alert("Item deleted.");
-        loadAllAdminData();
-    }
-
-    function showPage(pageId) {
+    async function showPage(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId)?.classList.add('active');
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
         document.querySelector(`.nav-link[data-page="${pageId}"]`)?.classList.add('active');
+        
+        if (isDataLoaded[pageId]) return;
+
+        try {
+            switch(pageId) {
+                case 'dashboard':
+                    const [memSnap, donSnap, expSnap] = await Promise.all([getDocs(collection(db, "members")), getDocs(collection(db, "donations")), getDocs(collection(db, "expenses"))]);
+                    allMembers = memSnap.docs.map(d=>({id:d.id, ...d.data()}));
+                    allDonations = donSnap.docs.map(d=>({id:d.id, ...d.data()}));
+                    allExpenses = expSnap.docs.map(d=>({id:d.id, ...d.data()}));
+                    renderDashboard();
+                    break;
+                case 'members':
+                    if(!allMembers.length) allMembers = (await getDocs(collection(db, "members"))).docs.map(d=>({id:d.id, ...d.data()}));
+                    renderMembers();
+                    break;
+                 // Add cases for other pages: expenses, notices, settings, etc.
+                 // Each case will fetch its data if not already fetched, then call its render function.
+            }
+            isDataLoaded[pageId] = true;
+        } catch(e) { console.error("Error loading page:", e); }
     }
+    
+    function renderDashboard() {
+        document.getElementById('total-users-card').innerHTML = `<i class="fas fa-users"></i><h3>${allMembers.length}</h3><p>মোট সদস্য</p>`;
+        const income = allDonations.reduce((s, d) => s + Number(d.amount), 0);
+        const expense = allExpenses.reduce((s, e) => s + Number(e.amount), 0);
+        document.getElementById('finance-summary-card').innerHTML = `<i class="fas fa-chart-line"></i><h3>${(income - expense).toLocaleString('bn-BD')}</h3><p>বর্তমান ব্যালেন্স</p>`;
+        document.getElementById('blood-stats-card').innerHTML = `<i class="fas fa-tint"></i><h3>${allMembers.filter(m => m.blood).length}</h3><p>মোট রক্তদাতা</p>`;
+    }
+
+    function renderMembers() {
+        const tbody = document.querySelector('#members-table tbody');
+        tbody.innerHTML = allMembers.map(m => `<tr>
+            <td><img src="${m.img || 'https://via.placeholder.com/40'}" alt="${m.name}"></td>
+            <td>${m.name}</td><td>${m.phone}</td><td>${m.blood}</td>
+            <td><button class="btn btn-danger" onclick="deleteData('members', '${m.id}')">Delete</button></td>
+        </tr>`).join('');
+    }
+    
+    window.deleteData = async (collectionName, docId) => {
+        if (!confirm("Are you sure?")) return;
+        await deleteDoc(doc(db, collectionName, docId));
+        alert("Deleted successfully!");
+        isDataLoaded = {}; // Reset cache
+        showPage(document.querySelector('.nav-link.active').dataset.page); // Refresh current page
+    };
+
+    // Define other render functions and action handlers (approve/reject donation etc.)
 </script>
 </body>
 </html>
