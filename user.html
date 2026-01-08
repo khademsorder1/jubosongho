@@ -18,15 +18,15 @@
             --dark-text: #2c3e50; 
             --light-text: #7f8c8d; 
             --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); 
-            --bkash-color: #e2136e;
-            --nagad-color: #f6921e;
+            --bkash-color: #d81b60; /* Slightly darker text for contrast on light bg */
+            --nagad-color: #e65100;
         }
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
         
         body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background-color: var(--light-gray); color: var(--dark-text); padding-bottom: 80px; -webkit-tap-highlight-color: transparent; }
         
         /* Header Styling */
-        header { background: linear-gradient(135deg, #009688, #004d40); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-bottom: -20px; padding-bottom: 50px; }
+        header { background: linear-gradient(135deg, #009688, #004d40); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-bottom: -20px; padding-bottom: 60px; /* Padding increased to push content down */ }
         header h1 { font-size: 1.8rem; margin: 0; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         header p { font-size: 0.95rem; margin: 5px 0 0; opacity: 0.95; }
         header .established { display: inline-block; background-color: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 20px; font-weight: bold; margin-top: 12px; font-size: 0.85rem; }
@@ -39,8 +39,15 @@
         h2 { font-size: 1.4rem; text-align: center; margin-bottom: 20px; color: var(--primary-dark); position: relative; padding-bottom: 10px; font-weight: 700; }
         h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: linear-gradient(to right, var(--primary-color), var(--accent-color)); border-radius: 2px; }
         
-        /* NOTICE BOARD STYLING (Material UI & Animated) */
-        .notice-card { border-top: 5px solid var(--accent-color); position: relative; overflow: hidden; padding: 0; }
+        /* NOTICE BOARD STYLING (Updated Spacing) */
+        .notice-card { 
+            border-top: 5px solid var(--accent-color); 
+            position: relative; 
+            overflow: hidden; 
+            padding: 0; 
+            margin-top: 25px; /* Gap from Logo/Header */
+            margin-bottom: 30px; /* Gap before Feature Cards */
+        }
         .notice-header { background: #fff; padding: 15px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
         .notice-header h3 { margin: 0; font-size: 1.2rem; color: var(--dark-text); display: flex; align-items: center; }
         .notice-header h3 i { color: var(--accent-color); margin-right: 10px; font-size: 1.4rem; }
@@ -92,11 +99,20 @@
         .payment-method-card h4 { margin: 0 0 5px 0; font-size: 1.1rem; font-weight: 700; z-index: 2; } 
         .payment-number { font-weight: 800; font-size: 1.5rem; margin: 5px 0 0 0; z-index: 2; letter-spacing: 1px; }
         
-        /* Specific Styles for bKash & Nagad */
-        .bkash-card { background-color: #ffebee; border: 1px solid #ffcdd2; color: var(--bkash-color); }
-        .bkash-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: rgba(226, 19, 110, 0.1); border-radius: 50%; }
-        .nagad-card { background-color: #fff3e0; border: 1px solid #ffe0b2; color: var(--nagad-color); }
-        .nagad-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: rgba(246, 146, 30, 0.1); border-radius: 50%; }
+        /* Updated Lighter Payment Cards */
+        .bkash-card { 
+            background-color: #fff0f6; /* Very light pink */
+            border: 1px solid #f8bbd0; /* Soft pink border */
+            color: var(--bkash-color); 
+        }
+        .bkash-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: rgba(216, 27, 96, 0.05); border-radius: 50%; }
+        
+        .nagad-card { 
+            background-color: #fff8e1; /* Very light orange/yellow */
+            border: 1px solid #ffecb3; /* Soft orange border */
+            color: var(--nagad-color); 
+        }
+        .nagad-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: rgba(230, 81, 0, 0.05); border-radius: 50%; }
 
         /* Member List & Donation History */
         .member-list .member-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; border-radius: 10px; margin-bottom: 5px; }
@@ -185,7 +201,7 @@
         <!-- HOME SECTION -->
         <div id="home-section" class="page">
             
-            <!-- NOTICE BOARD -->
+            <!-- NOTICE BOARD (Spacing Added) -->
             <div class="card notice-card">
                 <div class="notice-header">
                     <h3><i class="fas fa-bullhorn"></i> নোটিশ বোর্ড</h3>
@@ -220,15 +236,14 @@
             </div>
         </div>
 
-        <!-- DONATION SUBMISSION FORM (UPDATED) -->
+        <!-- DONATION SUBMISSION FORM (Lighter Cards) -->
         <div id="donation-form-section" class="page">
             <div class="card">
                 <h2><i class="fas fa-hand-holding-usd"></i> অনুদান পাঠানোর মাধ্যম</h2>
                 
-                <!-- Restored Text 1 -->
                 <p class="donate-text">আমাদের কার্যক্রমকে সচল রাখতে আপনার অনুদান একান্ত কাম্য। নিচের নম্বরগুলোতে টাকা পাঠিয়ে আমাদের সাহায্য করতে পারেন।</p>
                 
-                <!-- Colorful Payment Numbers -->
+                <!-- Colorful Payment Numbers (Lite Version) -->
                 <div id="paymentNumbers">
                     <div class="payment-grid">
                         <div class="payment-method-card bkash-card">
@@ -242,7 +257,6 @@
                     </div>
                 </div>
                 
-                <!-- Restored Text 2 -->
                 <p class="donate-instruction">টাকা পাঠানোর পর, অনুগ্রহ করে নিচের ফর্মটি পূরণ করে সাবমিট করুন। আমরা আপনার অনুদানটি যাচাই করে ডোনেশন লিস্টে যুক্ত করে দেবো।</p>
                 
                 <h3 style="margin-top:25px; font-size:1.1rem; text-align:left; color: var(--primary-dark);">তথ্য সাবমিট করুন</h3>
@@ -601,7 +615,6 @@
             allExpenses = expensesSnapshot.docs.map(e => ({ id: e.id, ...e.data() }));
             
             loadHomeNotices(noticesSnapshot);
-            // loadPaymentNumbers is removed from here as we hardcoded it for better UI
             loadMembers();
             populateMonthFilter();
             
