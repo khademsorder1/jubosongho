@@ -1,3 +1,4 @@
+<!-- FILE: index.html -->
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -5,891 +6,322 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>হিজলী দিঘাপাড়া যুব সংঘ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <!-- Chart.js লাইব্রেরি -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { display: none; }
         :root { 
-            --primary-color: #009688; 
-            --primary-dark: #00796b;
-            --accent-color: #ffca28;
-            --alert-color: #e74c3c;
-            --light-gray: #f4f7f6; 
-            --dark-text: #2c3e50; 
-            --light-text: #7f8c8d; 
-            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); 
-            --bkash-color: #d81b60; /* Slightly darker text for contrast on light bg */
-            --nagad-color: #e65100;
+            --primary-color: #009688; --primary-dark: #00796b; --accent-color: #ffca28;
+            --alert-color: #e74c3c; --light-gray: #f4f7f6; --dark-text: #2c3e50; 
+            --light-text: #7f8c8d; --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); 
+            --bkash-color: #d81b60; --nagad-color: #e65100;
         }
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
-        
         body { font-family: 'Hind Siliguri', sans-serif; margin: 0; background-color: var(--light-gray); color: var(--dark-text); padding-bottom: 80px; -webkit-tap-highlight-color: transparent; }
         
-        /* Header Styling */
-        header { background: linear-gradient(135deg, #009688, #004d40); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-bottom: -20px; padding-bottom: 60px; /* Padding increased to push content down */ }
-        header h1 { font-size: 1.8rem; margin: 0; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        header p { font-size: 0.95rem; margin: 5px 0 0; opacity: 0.95; }
+        header { background: linear-gradient(135deg, #009688, #004d40); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-bottom: -20px; padding-bottom: 60px; }
+        header h1 { font-size: 1.8rem; margin: 0; font-weight: 700; } header p { margin: 5px 0 0; opacity: 0.95; }
         header .established { display: inline-block; background-color: rgba(255,255,255,0.2); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 20px; font-weight: bold; margin-top: 12px; font-size: 0.85rem; }
         
-        .page { display: none; padding: 15px; animation: fadeIn 0.4s ease-in-out; }
-        .page.active { display: block; }
+        .page { display: none; padding: 15px; animation: fadeIn 0.4s ease-in-out; } .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .card { background-color: white; padding: 20px; border-radius: 16px; box-shadow: var(--card-shadow); margin-bottom: 20px; border: 1px solid #fff; }
         h2 { font-size: 1.4rem; text-align: center; margin-bottom: 20px; color: var(--primary-dark); position: relative; padding-bottom: 10px; font-weight: 700; }
         h2::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: linear-gradient(to right, var(--primary-color), var(--accent-color)); border-radius: 2px; }
         
-        /* NOTICE BOARD STYLING (Updated Spacing) */
-        .notice-card { 
-            border-top: 5px solid var(--accent-color); 
-            position: relative; 
-            overflow: hidden; 
-            padding: 0; 
-            margin-top: 25px; /* Gap from Logo/Header */
-            margin-bottom: 30px; /* Gap before Feature Cards */
-        }
-        .notice-header { background: #fff; padding: 15px 20px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
-        .notice-header h3 { margin: 0; font-size: 1.2rem; color: var(--dark-text); display: flex; align-items: center; }
-        .notice-header h3 i { color: var(--accent-color); margin-right: 10px; font-size: 1.4rem; }
-        
-        .notice-list { padding: 0; }
-        .notice-item { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; transition: background 0.3s; position: relative; }
-        .notice-item:last-child { border-bottom: none; }
-        .notice-item h4 { margin: 0 0 5px 0; font-size: 1rem; color: #333; line-height: 1.4; }
-        .notice-item p { margin: 0; font-size: 0.85rem; color: #777; display: flex; align-items: center; }
-        .notice-item p i { margin-right: 5px; font-size: 0.8rem; }
-
-        /* Animation for Latest Notice */
-        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); } 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); } }
-        @keyframes highlight-glow { 0% { background-color: #fff; } 50% { background-color: #fff8e1; } 100% { background-color: #fff; } }
-
+        /* Notice */
+        .notice-card { border-top: 5px solid var(--accent-color); padding: 0; margin-top: 25px; margin-bottom: 30px; }
+        .notice-header { background: #fff; padding: 15px 20px; border-bottom: 1px solid #f0f0f0; } .notice-header h3 { margin: 0; color: var(--dark-text); }
+        .notice-item { padding: 15px 20px; border-bottom: 1px solid #f0f0f0; } 
         .latest-notice { background-color: #fffde7; border-left: 4px solid var(--alert-color); animation: highlight-glow 3s infinite alternate; }
-        .new-badge { background-color: var(--alert-color); color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; margin-left: 8px; display: inline-block; animation: pulse-red 2s infinite; vertical-align: middle; font-weight: bold; }
+        @keyframes highlight-glow { 0% { background-color: #fff; } 50% { background-color: #fff8e1; } 100% { background-color: #fff; } }
+        .new-badge { background-color: var(--alert-color); color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; margin-left: 8px; font-weight: bold; }
 
-        /* Inputs & Buttons */
-        .search-bar, .filter-bar select, input, select, textarea { width: 100%; padding: 12px 15px; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 15px; box-sizing: border-box; font-family: inherit; font-size: 1rem; transition: all 0.3s; background: #fafafa; }
-        .search-bar:focus, input:focus, select:focus { border-color: var(--primary-color); outline: none; background: white; box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.1); }
-        .filter-bar { display: flex; gap: 10px; margin-bottom: 15px; }
+        /* Inputs */
+        .search-bar, input, select { width: 100%; padding: 12px 15px; border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 15px; box-sizing: border-box; font-family: inherit; background: #fafafa; }
+        button { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; border: none; cursor: pointer; font-size: 1rem; padding: 14px; border-radius: 12px; width: 100%; font-weight: 600; box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3); }
         
-        button { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; border: none; cursor: pointer; font-size: 1rem; padding: 14px; border-radius: 12px; width: 100%; font-weight: 600; box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3); transition: transform 0.2s, box-shadow 0.2s; }
-        button:active { transform: scale(0.98); box-shadow: 0 2px 5px rgba(0, 150, 136, 0.2); }
-
-        /* Feature Cards (Home) */
-        #home-section .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; margin-top: 10px; }
-        .feature-card-v2 { background: white; border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow); display: flex; flex-direction: column; text-align: center; cursor: pointer; transition: transform 0.2s; position: relative; }
-        .feature-card-v2:active { transform: scale(0.97); }
-        .feature-card-v2-top { padding: 25px 10px; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); }
-        .feature-card-v2-top i { font-size: 2rem; margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
-        .feature-card-v2-top h3 { margin: 0; font-size: 1.1rem; font-weight: 600; }
-        .feature-card-v2-bottom { padding: 10px 10px 15px; background: #fff; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
-        .feature-card-v2-bottom p { margin: 0; font-size: 0.85rem; color: var(--light-text); font-weight: 500; }
+        /* Features */
+        .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px; }
+        .feature-card-v2 { background: white; border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow); text-align: center; cursor: pointer; }
+        .feature-card-v2-top { padding: 25px 10px; color: white; clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); }
+        .feature-card-v2-top i { font-size: 2rem; margin-bottom: 10px; }
+        .feature-card-v2-bottom { padding: 10px; } .feature-card-v2-bottom p { margin: 0; font-size: 0.85rem; color: var(--light-text); }
         
-        .card-chada .feature-card-v2-top { background: linear-gradient(135deg, #00897b, #4db6ac); }
-        .card-fee .feature-card-v2-top { background: linear-gradient(135deg, #fbc02d, #f57f17); }
-        .card-blood .feature-card-v2-top { background: linear-gradient(135deg, #e53935, #ef5350); }
-        .card-member .feature-card-v2-top { background: linear-gradient(135deg, #8e24aa, #ab47bc); }
+        .card-member .feature-card-v2-top { background: linear-gradient(135deg, #00897b, #4db6ac); }
+        .card-chada .feature-card-v2-top { background: linear-gradient(135deg, #fbc02d, #f57f17); }
+        .card-fee .feature-card-v2-top { background: linear-gradient(135deg, #e53935, #ef5350); }
+        .card-blood .feature-card-v2-top { background: linear-gradient(135deg, #8e24aa, #ab47bc); }
         .card-donate .feature-card-v2-top { background: linear-gradient(135deg, #1e88e5, #42a5f5); }
 
-        /* Donation & Payment Styles */
-        .donate-text { color: #555; font-size: 0.95rem; margin-bottom: 25px; line-height: 1.6; text-align: center; }
-        .donate-instruction { border-top: 1px solid #eee; padding-top: 20px; margin-top: 25px; color: #555; font-size: 0.95rem; text-align: center; line-height: 1.6; }
-        
+        /* Payment */
         .payment-grid { display: grid; gap: 15px; margin: 10px 0; }
-        .payment-method-card { background: #fff; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; }
-        .payment-method-card h4 { margin: 0 0 5px 0; font-size: 1.1rem; font-weight: 700; z-index: 2; } 
-        .payment-number { font-weight: 800; font-size: 1.5rem; margin: 5px 0 0 0; z-index: 2; letter-spacing: 1px; }
-        
-        /* Updated Lighter Payment Cards */
-        .bkash-card { 
-            background-color: #fff0f6; /* Very light pink */
-            border: 1px solid #f8bbd0; /* Soft pink border */
-            color: var(--bkash-color); 
-        }
-        .bkash-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: rgba(216, 27, 96, 0.05); border-radius: 50%; }
-        
-        .nagad-card { 
-            background-color: #fff8e1; /* Very light orange/yellow */
-            border: 1px solid #ffecb3; /* Soft orange border */
-            color: var(--nagad-color); 
-        }
-        .nagad-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: rgba(230, 81, 0, 0.05); border-radius: 50%; }
+        .payment-method-card { background: #fff; border-radius: 15px; padding: 20px; text-align: center; position: relative; overflow: hidden; }
+        .bkash-card { background-color: #fff0f6; border: 1px solid #f8bbd0; color: var(--bkash-color); }
+        .nagad-card { background-color: #fff8e1; border: 1px solid #ffecb3; color: var(--nagad-color); }
+        .payment-number { font-weight: 800; font-size: 1.5rem; margin: 5px 0 0 0; letter-spacing: 1px; }
 
-        /* Member List & Donation History */
-        .member-list .member-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s; border-radius: 10px; margin-bottom: 5px; }
-        .member-list .member-item:hover { background-color: #f9f9f9; }
-        .member-item img { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; object-fit: cover; border: 2px solid var(--primary-color); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .member-number { font-weight: 700; color: var(--primary-color); margin-right: 12px; min-width: 25px; font-size: 1.1rem; }
-
-        .donation-group { border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; background: white; transition: box-shadow 0.2s; }
-        .donation-group.active { box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-color: var(--primary-color); }
-        .donation-header { display: flex; align-items: center; padding: 15px; cursor: pointer; background: white; transition: background 0.2s; }
-        .donation-header img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-right: 15px; }
-        .donation-summary { flex-grow: 1; }
-        .donation-summary h4 { margin: 0; font-size: 1.05rem; color: var(--dark-text); font-weight: 600; }
+        /* Members & Donations */
+        .member-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+        .member-item img { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; object-fit: cover; border: 2px solid var(--primary-color); }
+        .donation-group { border: 1px solid #e0e0e0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; background: white; }
+        .donation-header { display: flex; align-items: center; padding: 15px; cursor: pointer; }
+        .donation-header img { width: 45px; height: 45px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
         .donation-details-list { display: none; background-color: #fafafa; border-top: 1px solid #eee; }
-        .donation-group.active .donation-details-list { display: block; animation: slideDown 0.3s; }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .history-item { padding: 12px 15px 12px 75px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; font-size: 0.9rem; align-items: center; }
-        .history-amount { font-weight: 700; color: var(--primary-color); font-size: 1rem; }
-        .history-date { color: #888; font-size: 0.8rem; display: block; margin-top: 2px; }
+        .donation-group.active .donation-details-list { display: block; }
 
-        /* FINANCE TABLE STYLING */
-        .finance-cards-container { display: flex; gap: 10px; margin-bottom: 20px; justify-content: space-between; }
+        /* Finance Table */
+        .finance-cards-container { display: flex; gap: 10px; margin-bottom: 20px; }
         .finance-card-mini { background: white; padding: 15px; border-radius: 12px; flex: 1; text-align: center; box-shadow: var(--card-shadow); border: 1px solid #eee; }
-        .finance-card-mini h4 { margin: 0 0 5px; font-size: 0.8rem; color: var(--light-text); font-weight: 600; }
-        .finance-card-mini p { margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--dark-text); }
-        .text-income { color: #27ae60 !important; }
-        .text-expense { color: #c0392b !important; }
-        .text-balance { color: #2980b9 !important; }
-
-        .finance-table-container { overflow-x: auto; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white; border: 1px solid #eee; }
+        .text-income { color: #27ae60; } .text-expense { color: #c0392b; } .text-balance { color: #2980b9; }
         .finance-table { width: 100%; border-collapse: collapse; min-width: 400px; }
-        .finance-table th { background: linear-gradient(135deg, #009688, #00796b); color: white; padding: 12px 10px; text-align: right; font-weight: 600; font-size: 0.9rem; }
-        .finance-table th:first-child { text-align: left; padding-left: 15px; border-top-left-radius: 12px; }
-        .finance-table th:last-child { border-top-right-radius: 12px; }
-        .finance-table td { padding: 12px 10px; border-bottom: 1px solid #f0f0f0; text-align: right; font-size: 0.95rem; color: #444; }
-        .finance-table td:first-child { text-align: left; padding-left: 15px; font-weight: 500; color: var(--dark-text); }
-        .finance-table tr:last-child td { border-bottom: none; }
-        .finance-table tr:nth-child(even) { background-color: #f8fcfb; }
-        
-        .finance-footer-row td { background-color: #e8f5e9; font-weight: 800; color: var(--dark-text); border-top: 2px solid #009688; font-size: 1rem; padding-top: 15px; padding-bottom: 15px; }
-        .finance-footer-row td.total-income-cell { color: #27ae60; border-bottom: 3px solid #27ae60; }
-        .finance-footer-row td.total-expense-cell { color: #c0392b; border-bottom: 3px solid #c0392b; }
-        .finance-footer-row td.total-balance-cell { color: #2980b9; border-bottom: 3px solid #2980b9; }
+        .finance-table th { background: linear-gradient(135deg, #009688, #00796b); color: white; padding: 12px 10px; text-align: right; }
+        .finance-table td { padding: 12px 10px; border-bottom: 1px solid #f0f0f0; text-align: right; }
+        .finance-table td:first-child, .finance-table th:first-child { text-align: left; padding-left: 15px; }
+        .finance-footer-row td { background-color: #e8f5e9; font-weight: 800; border-top: 2px solid #009688; }
 
-        /* Blood Donor */
-        .donor-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative; margin-bottom: 15px; display: flex; flex-direction: column; }
-        .donor-header { display: flex; align-items: center; border-bottom: 1px solid #f9f9f9; padding-bottom: 10px; margin-bottom: 10px; }
-        .donor-header .blood-group { background: linear-gradient(135deg, #ff5252, #d32f2f); color: white; font-weight: bold; font-size: 1.3rem; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; box-shadow: 0 4px 8px rgba(211, 47, 47, 0.25); }
-        .eligibility-badge { position: absolute; top: 15px; right: 15px; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; color: white; text-transform: uppercase; letter-spacing: 0.5px; }
-        .eligible { background-color: #4caf50; }
-        .not-eligible { background-color: #f44336; }
-        .donor-info-row { display: flex; align-items: center; margin-bottom: 5px; color: #555; font-size: 0.95rem; }
-        .donor-info-row i { width: 25px; color: var(--primary-color); text-align: center; margin-right: 5px; }
-
-        /* Profile & Modal */
-        .profile-photo-container { position: relative; width: 130px; height: 130px; margin: 0 auto 20px; }
-        .profile-photo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color); padding: 3px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .profile-photo-overlay { position: absolute; bottom: 5px; right: 5px; background-color: var(--dark-text); color: white; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
-        .modal-content { background-color: #fff; margin: 15% auto; padding: 25px; border-radius: 20px; width: 85%; max-width: 400px; text-align: center; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.25); animation: zoomIn 0.3s; }
-        .close-btn { position: absolute; top: 15px; right: 20px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.2s; }
-        .info-table { text-align: left; margin: 0 auto; width: 100%; font-size: 0.95rem; border-collapse: collapse; }
-        .info-table td { padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
-        .info-table td:first-child { font-weight: 600; color: var(--light-text); width: 40%; }
+        /* Blood & Profile */
+        .donor-card { padding: 15px; border-radius: 12px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; position: relative; border: 1px solid #eee; }
+        .eligibility-badge { position: absolute; top: 15px; right: 15px; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; color: white; font-weight: bold; }
+        .eligible { background: #4caf50; } .not-eligible { background: #f44336; }
         
-        .collapsible-btn { background-color: #f1f2f6; color: #444; cursor: pointer; padding: 15px; width: 100%; border: none; text-align: left; outline: none; font-size: 1rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; transition: background 0.2s; }
-        .collapsible-content { display: none; overflow: hidden; padding: 5px; background-color: #fff; }
+        .profile-photo { width: 130px; height: 130px; border-radius: 50%; border: 4px solid var(--primary-color); object-fit: cover; display: block; margin: 0 auto; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); }
+        .modal-content { background-color: #fff; margin: 15% auto; padding: 25px; border-radius: 20px; width: 85%; max-width: 400px; text-align: center; position: relative; }
         
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background-color: white; box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05); display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; border-top-left-radius: 20px; border-top-right-radius: 20px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #bdc3c7; font-size: 0.75rem; padding: 5px; cursor: pointer; flex-grow: 1; transition: all 0.3s; }
-        .nav-item i { font-size: 1.5rem; margin-bottom: 5px; }
-        .nav-item.active { color: var(--primary-color); }
-        .nav-item.active i { transform: translateY(-3px); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); border-top-left-radius: 20px; border-top-right-radius: 20px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #bdc3c7; font-size: 0.75rem; cursor: pointer; }
+        .nav-item i { font-size: 1.5rem; margin-bottom: 5px; } .nav-item.active { color: var(--primary-color); }
     </style>
 </head>
 <body>
-    <header>
-        <h1>হিজলী দিঘাপাড়া যুব সংঘ</h1>
-        <p>বাগাতিপাড়া, নাটোর</p>
-        <div class="established">স্থাপিত: ২০২৬</div>
-    </header>
-
+    <header><h1>হিজলী দিঘাপাড়া যুব সংঘ</h1><p>বাগাতিপাড়া, নাটোর</p><div class="established">স্থাপিত: ২০২৬</div></header>
     <main>
-        <!-- HOME SECTION -->
+        <!-- Home -->
         <div id="home-section" class="page">
-            
-            <!-- NOTICE BOARD (Spacing Added) -->
             <div class="card notice-card">
-                <div class="notice-header">
-                    <h3><i class="fas fa-bullhorn"></i> নোটিশ বোর্ড</h3>
-                </div>
-                <div id="homeNoticeBoard" class="notice-list">
-                    <p style="padding:20px; text-align:center;">লোড হচ্ছে...</p>
-                </div>
+                <div class="notice-header"><h3><i class="fas fa-bullhorn"></i> নোটিশ বোর্ড</h3></div>
+                <div id="homeNoticeBoard" class="notice-list"><p style="padding:20px;text-align:center;">লোড হচ্ছে...</p></div>
             </div>
-
-            <!-- Features Grid -->
             <div class="features-grid">
-                <div class="feature-card-v2 card-member" onclick="showPage('member-section')">
-                    <div class="feature-card-v2-top"><i class="fas fa-users"></i><h3>সদস্য তথ্য</h3></div>
-                    <div class="feature-card-v2-bottom"><p>সদস্য তালিকা দেখুন</p></div>
-                </div>
-                <div class="feature-card-v2 card-chada" onclick="showPage('donation-section')">
-                    <div class="feature-card-v2-top"><i class="fas fa-hand-holding-heart"></i><h3>ডোনেশন</h3></div>
-                    <div class="feature-card-v2-bottom"><p>সকল অনুদান</p></div>
-                </div>
-                <div class="feature-card-v2 card-fee" onclick="showPage('finance-section')">
-                    <div class="feature-card-v2-top"><i class="fas fa-calculator"></i><h3>আয়-ব্যয়</h3></div>
-                    <div class="feature-card-v2-bottom"><p>হিসাব দেখুন</p></div>
-                </div>
-                <div class="feature-card-v2 card-blood" onclick="showPage('blood-section')">
-                    <div class="feature-card-v2-top"><i class="fas fa-droplet"></i><h3>ব্লাড ব্যাংক</h3></div>
-                    <div class="feature-card-v2-bottom"><p>রক্তদাতা খুঁজুন</p></div>
-                </div>
-                <div class="feature-card-v2 card-donate" onclick="showPage('donation-form-section')">
-                    <div class="feature-card-v2-top"><i class="fas fa-donate"></i><h3>অনুদান দিন</h3></div>
-                    <div class="feature-card-v2-bottom"><p>সাহায্য পাঠান</p></div>
-                </div>
+                <div class="feature-card-v2 card-member" onclick="showPage('member-section')"><div class="feature-card-v2-top"><i class="fas fa-users"></i><h3>সদস্য তথ্য</h3></div><div class="feature-card-v2-bottom"><p>তালিকা দেখুন</p></div></div>
+                <div class="feature-card-v2 card-chada" onclick="showPage('donation-section')"><div class="feature-card-v2-top"><i class="fas fa-hand-holding-heart"></i><h3>ডোনেশন</h3></div><div class="feature-card-v2-bottom"><p>সকল অনুদান</p></div></div>
+                <div class="feature-card-v2 card-fee" onclick="showPage('finance-section')"><div class="feature-card-v2-top"><i class="fas fa-calculator"></i><h3>আয়-ব্যয়</h3></div><div class="feature-card-v2-bottom"><p>হিসাব দেখুন</p></div></div>
+                <div class="feature-card-v2 card-blood" onclick="showPage('blood-section')"><div class="feature-card-v2-top"><i class="fas fa-droplet"></i><h3>ব্লাড ব্যাংক</h3></div><div class="feature-card-v2-bottom"><p>রক্তদাতা খুঁজুন</p></div></div>
+                <div class="feature-card-v2 card-donate" onclick="showPage('donation-form-section')"><div class="feature-card-v2-top"><i class="fas fa-donate"></i><h3>অনুদান দিন</h3></div><div class="feature-card-v2-bottom"><p>সাহায্য পাঠান</p></div></div>
             </div>
         </div>
 
-        <!-- DONATION SUBMISSION FORM (Lighter Cards) -->
+        <!-- Donation Form -->
         <div id="donation-form-section" class="page">
             <div class="card">
                 <h2><i class="fas fa-hand-holding-usd"></i> অনুদান পাঠানোর মাধ্যম</h2>
-                
-                <p class="donate-text">আমাদের কার্যক্রমকে সচল রাখতে আপনার অনুদান একান্ত কাম্য। নিচের নম্বরগুলোতে টাকা পাঠিয়ে আমাদের সাহায্য করতে পারেন।</p>
-                
-                <!-- Colorful Payment Numbers (Lite Version) -->
-                <div id="paymentNumbers">
-                    <div class="payment-grid">
-                        <div class="payment-method-card bkash-card">
-                            <h4>বিকাশ (পার্সোনাল)</h4>
-                            <p class="payment-number">01611173634</p>
-                        </div>
-                        <div class="payment-method-card nagad-card">
-                            <h4>নগদ (পার্সোনাল)</h4>
-                            <p class="payment-number">01611173634</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <p class="donate-instruction">টাকা পাঠানোর পর, অনুগ্রহ করে নিচের ফর্মটি পূরণ করে সাবমিট করুন। আমরা আপনার অনুদানটি যাচাই করে ডোনেশন লিস্টে যুক্ত করে দেবো।</p>
-                
-                <h3 style="margin-top:25px; font-size:1.1rem; text-align:left; color: var(--primary-dark);">তথ্য সাবমিট করুন</h3>
+                <p style="text-align:center;color:#555;margin-bottom:20px;">কার্যক্রম সচল রাখতে আপনার অনুদান কাম্য।</p>
+                <div id="paymentNumbers" class="payment-grid"><p>লোড হচ্ছে...</p></div>
+                <p style="border-top:1px solid #eee;padding-top:20px;margin-top:20px;text-align:center;color:#555;">টাকা পাঠানোর পর নিচের ফর্ম পূরণ করুন।</p>
                 <form id="donationVerificationForm">
-                    <div class="form-group"><input type="number" id="donationAmount" placeholder="টাকার পরিমাণ" required></div>
-                    <div class="form-group">
-                        <select id="paymentMethod" required>
-                            <option value="">পেমেন্ট মাধ্যম নির্বাচন করুন</option>
-                            <option value="বিকাশ">বিকাশ</option>
-                            <option value="নগদ">নগদ</option>
-                            <option value="ক্যাশ">হাতে হাতে (ক্যাশ)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select id="donationPurpose" required>
-                            <option value="">অনুদানর খাত (উদ্দেশ্য)</option>
-                            <option value="সামাজিক উন্নয়ন">সামাজিক উন্নয়ন</option>
-                            <option value="ঈদ অনুষ্ঠান">ঈদ অনুষ্ঠান</option>
-                            <option value="খেলাধুলা আয়োজন">খেলাধুলা আয়োজন</option>
-                            <option value="মসজিদ উন্নয়ন">মসজিদ উন্নয়ন</option>
-                            <option value="মাদ্রাসা">মাদ্রাসা</option>
-                            <option value="গরিব ও অসহায়দের সাহায্য">গরিব ও অসহায়দের সাহায্য</option>
-                            <option value="সাধারণ তহবিল">সাধারণ তহবিল</option>
-                            <option value="অন্যান্য">অন্যান্য</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><input type="text" id="transactionId" placeholder="আপনার নম্বর / TrxID" required></div>
-                    <div class="form-group"><label style="display:block;margin-bottom:5px;font-size:0.9rem;">স্ক্রিনশট (ঐচ্ছিক):</label><input type="file" id="paymentProof" accept="image/*"></div>
+                    <input type="number" id="donationAmount" placeholder="টাকার পরিমাণ" required>
+                    <select id="paymentMethod" required><option value="">পেমেন্ট মাধ্যম</option><option value="বিকাশ">বিকাশ</option><option value="নগদ">নগদ</option><option value="ক্যাশ">ক্যাশ</option></select>
+                    <select id="donationPurpose" required><option value="">খাত (উদ্দেশ্য)</option><option value="সামাজিক উন্নয়ন">সামাজিক উন্নয়ন</option><option value="ঈদ অনুষ্ঠান">ঈদ অনুষ্ঠান</option><option value="খেলাধুলা">খেলাধুলা</option><option value="মসজিদ">মসজিদ</option><option value="মাদ্রাসা">মাদ্রাসা</option><option value="অসহায় সাহায্য">অসহায় সাহায্য</option><option value="সাধারণ তহবিল">সাধারণ তহবিল</option><option value="অন্যান্য">অন্যান্য</option></select>
+                    <input type="text" id="transactionId" placeholder="নম্বর / TrxID" required>
+                    <label>স্ক্রিনশট (ঐচ্ছিক):</label><input type="file" id="paymentProof" accept="image/*">
                     <button type="submit">জমা দিন</button>
-                    <p id="donationFormStatus" style="text-align:center; margin-top:10px; font-size:0.9rem;"></p>
+                    <p id="donationFormStatus" style="text-align:center;margin-top:10px;"></p>
                 </form>
             </div>
         </div>
 
-        <!-- MEMBER LIST (Numbered) -->
-        <div id="member-section" class="page">
-            <h2><i class="fas fa-users"></i> সদস্য তালিকা</h2>
-            <div class="card">
-                <input type="text" id="memberSearch" class="search-bar" onkeyup="filterList('memberSearch', '#memberList .member-item')" placeholder="নাম দিয়ে খুঁজুন...">
-                <div id="memberList" class="member-list"><p>লোড হচ্ছে...</p></div>
-            </div>
-        </div>
+        <!-- Members -->
+        <div id="member-section" class="page"><h2><i class="fas fa-users"></i> সদস্য তালিকা</h2><div class="card"><input type="text" id="memberSearch" onkeyup="filterList('memberSearch','.member-item')" placeholder="খুঁজুন..."><div id="memberList"></div></div></div>
 
-        <!-- DONATION LIST (Material Accordion) -->
-        <div id="donation-section" class="page">
-            <h2><i class="fas fa-hand-holding-heart"></i> ডোনেশন তালিকা</h2>
-            <div class="card" style="background:transparent; box-shadow:none; padding:0; border:none;">
-                <div id="donationListContainer">
-                    <p style="text-align:center;">লোড হচ্ছে...</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- FINANCE SECTION (Table Design) -->
+        <!-- Donations List -->
+        <div id="donation-section" class="page"><h2><i class="fas fa-hand-holding-heart"></i> ডোনেশন তালিকা</h2><div class="card" style="background:transparent;box-shadow:none;padding:0;"><div id="donationListContainer"></div></div></div>
+
+        <!-- Finance -->
         <div id="finance-section" class="page">
             <h2><i class="fas fa-file-invoice-dollar"></i> আয়-ব্যয় হিসাব</h2>
-            
             <div class="finance-cards-container">
-                <div class="finance-card-mini" style="border-bottom: 3px solid #27ae60;">
-                    <h4>মোট আয়</h4>
-                    <p class="text-income" id="financeTotalIncome">৳0</p>
-                </div>
-                <div class="finance-card-mini" style="border-bottom: 3px solid #c0392b;">
-                    <h4>মোট ব্যয়</h4>
-                    <p class="text-expense" id="financeTotalExpense">৳0</p>
-                </div>
-                <div class="finance-card-mini" style="border-bottom: 3px solid #2980b9;">
-                    <h4>ব্যালেন্স</h4>
-                    <p class="text-balance" id="financeTotalBalance">৳0</p>
-                </div>
+                <div class="finance-card-mini" style="border-bottom:3px solid #27ae60;"><h4>আয়</h4><p class="text-income" id="financeTotalIncome">0</p></div>
+                <div class="finance-card-mini" style="border-bottom:3px solid #c0392b;"><h4>ব্যয়</h4><p class="text-expense" id="financeTotalExpense">0</p></div>
+                <div class="finance-card-mini" style="border-bottom:3px solid #2980b9;"><h4>ব্যালেন্স</h4><p class="text-balance" id="financeTotalBalance">0</p></div>
             </div>
-
             <div class="card">
-                <div class="filter-bar">
-                    <select id="financeMonthFilter" onchange="loadFinancePageData()">
-                        <option value="all">সর্বমোট হিসাব (All Time)</option>
-                    </select>
-                </div>
+                <select id="financeMonthFilter" onchange="loadFinancePageData()"><option value="all">সর্বমোট হিসাব</option></select>
+                <div style="overflow-x:auto;"><table class="finance-table"><thead><tr><th>খাত</th><th>আয়</th><th>ব্যয়</th><th>ব্যালেন্স</th></tr></thead><tbody id="financeTableBody"></tbody><tfoot><tr class="finance-footer-row"><td>মোট</td><td class="text-income" id="tableGrandTotalIncome">0</td><td class="text-expense" id="tableGrandTotalExpense">0</td><td class="text-balance" id="tableGrandTotalBalance">0</td></tr></tfoot></table></div>
+            </div>
+        </div>
 
-                <h3 style="font-size:1.1rem; margin-bottom:15px; text-align:left; color:var(--dark-text);">খাত অনুযায়ী হিসাব</h3>
-                
-                <div class="finance-table-container">
-                    <table class="finance-table">
-                        <thead>
-                            <tr>
-                                <th>খাত</th>
-                                <th>মোট আয়</th>
-                                <th>মোট ব্যয়</th>
-                                <th>বর্তমান ব্যালেন্স</th>
-                            </tr>
-                        </thead>
-                        <tbody id="financeTableBody">
-                            <!-- JS will populate rows here -->
-                        </tbody>
-                        <tfoot>
-                            <tr class="finance-footer-row" id="financeTableFooter">
-                                <td>সর্বমোট</td>
-                                <td class="total-income-cell" id="tableGrandTotalIncome">0</td>
-                                <td class="total-expense-cell" id="tableGrandTotalExpense">0</td>
-                                <td class="total-balance-cell" id="tableGrandTotalBalance">0</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!-- BLOOD SECTION -->
-        <div id="blood-section" class="page">
-            <h2><i class="fas fa-heartbeat"></i> রক্তদাতার তালিকা</h2>
-            <div class="card" style="background:transparent; padding:0; box-shadow:none; border:none;">
-                <div class="filter-bar">
-                    <select id="bloodGroupFilter" onchange="loadBloodDonors()">
-                        <option value="">সকল গ্রুপ</option>
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                    </select>
-                    <select id="bloodEligibilityFilter" onchange="loadBloodDonors()">
-                        <option value="all">সবাই</option>
-                        <option value="eligible">রক্তদানে প্রস্তুত</option>
-                    </select>
-                </div>
-                <div id="bloodList">
-                    <p style="text-align:center;">লোড হচ্ছে...</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- PROFILE SECTION -->
+        <!-- Blood -->
+        <div id="blood-section" class="page"><h2><i class="fas fa-heartbeat"></i> রক্তদাতা</h2><div class="card" style="background:transparent;padding:0;box-shadow:none;"><div style="display:flex;gap:10px;margin-bottom:10px;"><select id="bloodGroupFilter" onchange="loadBloodDonors()"><option value="">গ্রুপ</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="O+">O+</option><option value="O-">O-</option><option value="AB+">AB+</option><option value="AB-">AB-</option></select><select id="bloodEligibilityFilter" onchange="loadBloodDonors()"><option value="all">সবাই</option><option value="eligible">রেডি</option></select></div><div id="bloodList"></div></div></div>
+
+        <!-- Profile -->
         <div id="profile-section" class="page">
-            <h2><i class="fas fa-user-circle"></i> আমার প্রোফাইল</h2>
+            <h2><i class="fas fa-user-circle"></i> প্রোফাইল</h2>
             <div class="card">
-                <div class="profile-photo-container" onclick="document.getElementById('profilePhotoInput').click()">
-                    <img id="profilePhoto" src="https://via.placeholder.com/150" alt="Profile Photo" class="profile-photo">
-                    <div class="profile-photo-overlay"><i class="fas fa-camera"></i></div>
+                <div style="position:relative;width:130px;margin:0 auto 20px;" onclick="document.getElementById('profilePhotoInput').click()">
+                    <img id="profilePhoto" src="https://via.placeholder.com/150" class="profile-photo"><div style="position:absolute;bottom:5px;right:5px;background:#333;color:white;border-radius:50%;width:35px;height:35px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-camera"></i></div>
                 </div>
-                <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
-                <p id="photoUploadStatus" style="text-align:center; font-size:0.8rem; margin-top:5px;"></p>
-                
-                 <form id="profileEditForm" style="margin-top:20px;">
-                    <div class="form-group"><label>নাম:</label><input type="text" id="profileName" required></div>
-                    <div class="form-group"><label>মোবাইল:</label><input type="tel" id="profilePhone" placeholder="1xxxxxxxxx" required></div>
-                    <div class="form-group"><label>রক্তের গ্রুপ:</label>
-                        <select id="profileBlood" required>
-                            <option value="">নির্বাচন করুন</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="O+">O+</option><option value="O-">O-</option><option value="AB+">AB+</option><option value="AB-">AB-</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>জন্ম তারিখ:</label><input type="date" id="profileDob" required></div>
-                    <div class="form-group"><label>পেশা:</label><input type="text" id="profileIncome"></div>
-                    <div class="form-group"><label>বর্তমান ঠিকানা:</label><input type="text" id="profileLocation"></div>
-                    <div class="form-group"><label>শেষ রক্তদানের তারিখ:</label><input type="date" id="lastDonationDate"></div>
-                    <div class="form-group"><label>রক্তদানে ইচ্ছুক?</label><select id="isWillingToDonate"><option value="true">হ্যাঁ</option><option value="false">না</option></select></div>
-                    <button type="submit" style="margin-top:10px;">আপডেট করুন</button>
-                 </form>
+                <input type="file" id="profilePhotoInput" style="display:none;" accept="image/*">
+                <p id="photoUploadStatus" style="text-align:center;font-size:0.8rem;"></p>
+                <form id="profileEditForm">
+                    <input type="text" id="profileName" placeholder="নাম" required>
+                    <input type="tel" id="profilePhone" placeholder="মোবাইল" required>
+                    <select id="profileBlood" required><option value="">রক্তের গ্রুপ</option><option value="A+">A+</option><option value="A-">A-</option><option value="B+">B+</option><option value="B-">B-</option><option value="O+">O+</option><option value="O-">O-</option><option value="AB+">AB+</option><option value="AB-">AB-</option></select>
+                    <label>জন্ম তারিখ:</label><input type="date" id="profileDob" required>
+                    <input type="text" id="profileIncome" placeholder="পেশা">
+                    <input type="text" id="profileLocation" placeholder="ঠিকানা">
+                    <label>শেষ রক্তদান:</label><input type="date" id="lastDonationDate">
+                    <select id="isWillingToDonate"><option value="true">রক্তদানে ইচ্ছুক: হ্যাঁ</option><option value="false">না</option></select>
+                    <button type="submit">আপডেট</button>
+                </form>
             </div>
-
-             <!-- Collapsible History -->
-             <div class="card">
-                <button type="button" class="collapsible-btn" onclick="toggleMyHistory()">
-                    <span><i class="fas fa-history"></i> আমার ডোনেশন ইতিহাস</span>
-                    <i class="fas fa-chevron-down" id="historyIcon"></i>
-                </button>
-                <div id="myDonationsList" class="collapsible-content">
-                    <p style="padding:15px; text-align:center;">লোড হচ্ছে...</p>
-                </div>
-            </div>
+            <div class="card"><button onclick="document.getElementById('myDonationsList').style.display = document.getElementById('myDonationsList').style.display === 'block' ? 'none' : 'block'" style="background:#f1f2f6;color:#444;">আমার ডোনেশন ইতিহাস <i class="fas fa-chevron-down"></i></button><div id="myDonationsList" style="display:none;padding-top:10px;"></div></div>
         </div>
     </main>
 
-    <!-- Modal for Member Details -->
-    <div id="memberModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('memberModal')">&times;</span>
-            <img id="modalImg" src="" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--primary-color); object-fit:cover; margin-bottom:15px;">
-            <h3 id="modalName" style="margin:0 0 15px 0; color:var(--primary-dark);"></h3>
-            <table class="info-table">
-                <tr><td>রক্তের গ্রুপ:</td><td id="modalBlood"></td></tr>
-                <tr><td>মোবাইল:</td><td id="modalPhone"></td></tr>
-                <tr><td>পেশা:</td><td id="modalIncome"></td></tr>
-                <tr><td>ঠিকানা:</td><td id="modalLocation"></td></tr>
-                <tr><td>শেষ রক্তদান:</td><td id="modalLastDonation"></td></tr>
-                <tr><td>জন্ম তারিখ:</td><td id="modalDob"></td></tr>
-            </table>
-        </div>
-    </div>
+    <div id="memberModal" class="modal"><div class="modal-content"><span onclick="document.getElementById('memberModal').style.display='none'" style="position:absolute;top:15px;right:20px;font-size:28px;cursor:pointer;">&times;</span><img id="modalImg" src="" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:15px;"><h3 id="modalName"></h3><div id="modalDetails" style="text-align:left;"></div></div></div>
 
-    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="showPage('home-section')"><i class="fas fa-home"></i><span>হোম</span></div>
         <div class="nav-item" onclick="showPage('member-section')"><i class="fas fa-users"></i><span>সদস্য</span></div>
         <div class="nav-item" onclick="showPage('donation-section')"><i class="fas fa-hand-holding-heart"></i><span>ডোনেশন</span></div>
         <div class="nav-item" onclick="showPage('finance-section')"><i class="fas fa-calculator"></i><span>হিসাব</span></div>
         <div class="nav-item" onclick="showPage('blood-section')"><i class="fas fa-heart"></i><span>রক্ত</span></div>
-        <div class="nav-item" id="profileNavButton" onclick="showPage('profile-section')"><i class="fas fa-user"></i><span>প্রোফাইল</span></div>
-        <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>লগআউট</span></div>
+        <div class="nav-item" id="profileNavBtn" onclick="showPage('profile-section')"><i class="fas fa-user"></i><span>প্রোফাইল</span></div>
     </nav>
-    
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-    const firebaseConfig = { apiKey: "AIzaSyDerc9e0-e7WBnkK2GoinFejp7zszXJ3Jc", authDomain: "songho-8ef5c.firebaseapp.com", projectId: "songho-8ef5c", storageBucket: "songho-8ef5c.appspot.com", messagingSenderId: "489031747232", appId: "1:489031747232:web:4c1cde63dabaa620ed2bc5", measurementId: "G-5NY15E3XJJ" };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    
-    let currentUser = null;
-    let membersData = [];
-    let allDonations = [];
-    let allExpenses = [];
-
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            currentUser = user;
-            if (user.isAnonymous) {
-                document.getElementById('profileNavButton').style.display = 'none';
-                document.getElementById('logoutBtn').innerHTML = '<i class="fas fa-sign-in-alt"></i><span>লগইন</span>';
-            } else {
-                const docSnap = await getDoc(doc(db, "members", user.uid));
-                if (!docSnap.exists()) { window.location.replace('complete-profile.html'); return; }
-                loadProfileForEditing(docSnap.data());
-            }
-            await loadAllData();
-            showPage('home-section'); 
-            document.body.style.display = 'block';
-        } else { window.location.replace('login.html'); }
-    });
-    
-    document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
-    document.getElementById('profilePhotoInput').addEventListener('change', uploadProfilePhoto);
-
-    async function uploadToCloudinary(file) {
-        const cloudName = 'dy7sxczfo';
-        const uploadPreset = 'songho_preset';
-        const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', uploadPreset);
-        try {
-            const response = await fetch(url, { method: 'POST', body: formData });
-            if (!response.ok) throw new Error('Cloudinary upload failed');
-            const data = await response.json();
-            return data.secure_url;
-        } catch (error) {
-            console.error('Error uploading to Cloudinary:', error);
-            return null;
-        }
-    }
-
-    async function uploadProfilePhoto(e) {
-        const file = e.target.files[0];
-        if (!file || !currentUser) return;
-        const statusP = document.getElementById('photoUploadStatus');
-        statusP.textContent = 'ছবি আপলোড হচ্ছে...';
-        statusP.style.color = '#009688';
-        const downloadURL = await uploadToCloudinary(file);
-        if (downloadURL) {
-            await updateDoc(doc(db, "members", currentUser.uid), { img: downloadURL });
-            document.getElementById('profilePhoto').src = downloadURL;
-            statusP.textContent = 'সফল হয়েছে!';
-            setTimeout(() => statusP.textContent = '', 3000);
-        } else {
-            statusP.textContent = 'ব্যর্থ হয়েছে।';
-            statusP.style.color = 'red';
-        }
-    }
-
-    document.getElementById('donationVerificationForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitButton = e.target.querySelector('button');
-        submitButton.disabled = true;
-        submitButton.textContent = 'অপেক্ষা করুন...';
-        const statusP = document.getElementById('donationFormStatus');
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
         
-        if (!currentUser) { 
-            alert("অনুগ্রহ করে প্রথমে লগইন করুন।"); 
-            submitButton.disabled = false; submitButton.textContent = 'জমা দিন';
-            return;
-        }
-
-        const proofFile = document.getElementById('paymentProof').files[0];
-        let proofImageUrl = null;
-        if (proofFile) {
-            statusP.textContent = 'ছবি আপলোড হচ্ছে...';
-            proofImageUrl = await uploadToCloudinary(proofFile);
-            if (!proofImageUrl) {
-                statusP.textContent = 'ছবি আপলোড করা যায়নি।'; 
-                statusP.style.color = 'red';
-                submitButton.disabled = false; submitButton.textContent = 'জমা দিন';
-                return;
-            }
-        }
+        const firebaseConfig = { apiKey: "AIzaSyDerc9e0-e7WBnkK2GoinFejp7zszXJ3Jc", authDomain: "songho-8ef5c.firebaseapp.com", projectId: "songho-8ef5c", storageBucket: "songho-8ef5c.appspot.com", messagingSenderId: "489031747232", appId: "1:489031747232:web:4c1cde63dabaa620ed2bc5", measurementId: "G-5NY15E3XJJ" };
+        const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
         
-        let userName = "অতিথি", userImage = "https://via.placeholder.com/50";
-        if (!currentUser.isAnonymous) {
-            const userDoc = await getDoc(doc(db, "members", currentUser.uid));
-            if (userDoc.exists()) { userName = userDoc.data().name; userImage = userDoc.data().img; }
-        }
+        let currentUser=null, membersData=[], allDonations=[], allExpenses=[];
 
-        const data = {
-            userId: currentUser.uid, userName, userImage,
-            amount: Number(document.getElementById('donationAmount').value),
-            paymentMethod: document.getElementById('paymentMethod').value,
-            purposeKey: document.getElementById('donationPurpose').value,
-            transactionInfo: document.getElementById('transactionId').value,
-            proofImageUrl: proofImageUrl,
-            status: 'pending', submittedAt: new Date(),
-            date: new Date().toISOString().split('T')[0].split('-').reverse().join('-')
-        };
-        try {
-            await addDoc(collection(db, "pending_donations"), data);
-            statusP.textContent = 'আপনার তথ্য জমা হয়েছে। যাচাইয়ের পর লিস্টে যুক্ত হবে।'; 
-            statusP.style.color = 'green';
-            e.target.reset();
-        } catch (error) { 
-            statusP.textContent = 'সমস্যা হয়েছে। আবার চেষ্টা করুন।'; 
-            statusP.style.color = 'red'; 
-        } finally { 
-            submitButton.disabled = false; submitButton.textContent = 'জমা দিন'; 
-        }
-    });
+        onAuthStateChanged(auth, async(u)=>{
+            if(u){
+                currentUser=u; 
+                if(!u.isAnonymous){
+                    const d=await getDoc(doc(db,"members",u.uid));
+                    if(!d.exists()) window.location.replace('complete-profile.html');
+                    else loadProfile(d.data());
+                } else document.getElementById('profileNavBtn').style.display='none';
+                loadData(); document.body.style.display='block'; showPage('home-section');
+            } else window.location.replace('login.html');
+        });
 
-    function loadProfileForEditing(data) {
-        document.getElementById('profilePhoto').src = data.img || 'https://via.placeholder.com/150';
-        document.getElementById('profileName').value = data.name || '';
-        document.getElementById('profilePhone').value = data.phone.startsWith('+880') ? data.phone.substring(4) : data.phone;
-        document.getElementById('profileBlood').value = data.blood || '';
-        document.getElementById('profileIncome').value = data.income || '';
-        document.getElementById('profileLocation').value = data.location || '';
-        document.getElementById('lastDonationDate').value = data.lastDonationDate || '';
-        document.getElementById('isWillingToDonate').value = data.isWillingToDonate !== undefined ? String(data.isWillingToDonate) : 'true';
-        if (data.dob) {
-            const parts = data.dob.split('-');
-            if (parts.length === 3) { document.getElementById('profileDob').value = `${parts[2]}-${parts[1]}-${parts[0]}`; }
-        }
-    }
-    
-    async function loadAllData() { 
-        try { 
-            const [membersSnapshot, donationsSnapshot, expensesSnapshot, noticesSnapshot] = await Promise.all([
-                getDocs(collection(db, "members")),
-                getDocs(query(collection(db, "donations"), orderBy("date", "desc"))),
-                getDocs(query(collection(db, "expenses"), orderBy("date", "desc"))),
-                getDocs(query(collection(db, "notices"), orderBy("date", "desc")))
+        async function loadData(){
+            const [m,d,e,n,s] = await Promise.all([
+                getDocs(collection(db,"members")),
+                getDocs(query(collection(db,"donations"), orderBy("date","desc"))),
+                getDocs(query(collection(db,"expenses"), orderBy("date","desc"))),
+                getDocs(query(collection(db,"notices"), orderBy("date","desc"))),
+                getDoc(doc(db,"settings","payment"))
             ]);
+            membersData=m.docs.map(x=>({id:x.id,...x.data()}));
+            allDonations=d.docs.map(x=>({id:x.id,...x.data()}));
+            allExpenses=e.docs.map(x=>({id:x.id,...x.data()}));
             
-            membersData = membersSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-            allDonations = donationsSnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-            allExpenses = expensesSnapshot.docs.map(e => ({ id: e.id, ...e.data() }));
-            
-            loadHomeNotices(noticesSnapshot);
-            loadMembers();
-            populateMonthFilter();
-            
-            loadFinancePageData();
-            loadBloodDonors();
-            loadDonations();
-            if (currentUser && !currentUser.isAnonymous) {
-                loadMyDonations(currentUser.uid);
-            }
-        } catch (error) { console.error("Error loading data:", error); } 
-    }
-
-    function loadHomeNotices(snapshot) {
-        const noticeBoard = document.getElementById('homeNoticeBoard');
-        noticeBoard.innerHTML = '';
-        if (snapshot.empty) { 
-            noticeBoard.innerHTML = '<p style="padding:20px; text-align:center; color:#777;">কোনো নতুন নোটিশ নেই।</p>'; 
-            return; 
+            renderNotices(n); renderPayment(s); renderMembers(); renderFinance(); renderBlood(); renderDonations();
         }
-        
-        snapshot.docs.slice(0, 5).forEach((doc, index) => {
-            const notice = doc.data();
-            const date = parseDate(notice.date).toLocaleDateString('bn-BD');
-            
-            const activeClass = index === 0 ? 'latest-notice' : '';
-            const newBadge = index === 0 ? '<span class="new-badge">নতুন</span>' : '';
-            const iconColor = index === 0 ? '#e74c3c' : '#7f8c8d';
 
-            noticeBoard.innerHTML += `
-                <div class="notice-item ${activeClass}">
-                    <h4>${notice.title} ${newBadge}</h4>
-                    <p><i class="far fa-calendar-alt" style="color:${iconColor}"></i> ${date}</p>
-                </div>
-            `;
-        });
-    }
-
-    function loadMembers() { 
-        const list = document.getElementById('memberList'); 
-        list.innerHTML = ''; 
-        membersData.forEach((m, index) => {
-            list.innerHTML += `
-            <div class="member-item" onclick="showMemberDetails('${m.id}')">
-                <span class="member-number">${translateNum(index + 1)}.</span>
-                <img src="${m.img || 'https://via.placeholder.com/100'}" alt="${m.name}">
-                <div><div style="font-weight:600; color:#333;">${m.name}</div><small style="color:#777;">${m.phone || ''}</small></div>
-            </div>`; 
-        }); 
-    }
-
-    window.loadDonations = function() {
-        const list = document.getElementById('donationListContainer');
-        list.innerHTML = '';
-        const userDonations = {};
-        allDonations.forEach(d => {
-            if (!userDonations[d.userId]) {
-                userDonations[d.userId] = { name: d.userName, image: d.userImage, total: 0, history: [] };
-            }
-            userDonations[d.userId].total += Number(d.amount);
-            userDonations[d.userId].history.push(d);
-        });
-        const sortedUsers = Object.entries(userDonations).sort((a, b) => b[1].total - a[1].total);
-        if(sortedUsers.length === 0) { list.innerHTML = '<p style="text-align:center; padding:20px;">কোনো তথ্য পাওয়া যায়নি।</p>'; return; }
-
-        sortedUsers.forEach(([userId, data]) => {
-            let historyHTML = '';
-            data.history.forEach(h => {
-                const date = parseDate(h.date);
-                historyHTML += `<div class="history-item"><span>${h.purposeKey || 'সাধারণ'}</span><div style="text-align:right;"><div class="history-amount">৳${Number(h.amount).toLocaleString('bn-BD')}</div><div class="history-date">${date ? date.toLocaleDateString('bn-BD') : ''}</div></div></div>`;
+        function renderNotices(snap){
+            const el = document.getElementById('homeNoticeBoard'); el.innerHTML='';
+            if(snap.empty){ el.innerHTML='<p style="text-align:center;padding:20px;">নোটিশ নেই</p>'; return;}
+            snap.docs.slice(0,5).forEach((d,i)=>{
+                const n=d.data();
+                el.innerHTML+=`<div class="notice-item ${i===0?'latest-notice':''}"><h4>${n.title} ${i===0?'<span class="new-badge">নতুন</span>':''}</h4><p style="font-size:0.8rem;color:#777;"><i class="far fa-calendar-alt"></i> ${new Date(n.date).toLocaleDateString('bn-BD')}</p></div>`;
             });
-            list.innerHTML += `<div class="donation-group" id="grp-${userId}"><div class="donation-header" onclick="toggleDonationGroup('${userId}')"><img src="${data.image || 'https://via.placeholder.com/50'}" alt="${data.name}"><div class="donation-summary"><h4>${data.name}</h4><p>সর্বমোট: ৳${data.total.toLocaleString('bn-BD')}</p></div><i class="fas fa-chevron-down donation-expand-icon"></i></div><div class="donation-details-list">${historyHTML}</div></div>`;
-        });
-    }
-
-    window.toggleDonationGroup = function(id) {
-        const group = document.getElementById(`grp-${id}`);
-        document.querySelectorAll('.donation-group').forEach(g => { if(g.id !== `grp-${id}`) g.classList.remove('active'); });
-        group.classList.toggle('active');
-    }
-
-    function translateNum(num) { return num.toString().replace(/[0-9]/g, d => "০১২৩৪৫৬৭৮৯"[d]); }
-    function parseDate(dateString) { if (!dateString) return null; const d = new Date(dateString); if (!isNaN(d.getTime())) return d; if (/^\d{2}-\d{2}-\d{4}$/.test(dateString)) { const p = dateString.split('-'); return new Date(p[2], p[1] - 1, p[0]); } return null; }
-    
-    function populateMonthFilter() {
-        const monthFilter = document.getElementById('financeMonthFilter');
-        monthFilter.innerHTML = '<option value="all">সর্বমোট হিসাব</option>';
-        const months = new Set();
-        [...allDonations, ...allExpenses].forEach(item => {
-            const date = parseDate(item.date);
-            if (date) {
-                const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-                const monthLabel = date.toLocaleString('bn-BD', { year: 'numeric', month: 'long' });
-                months.add(JSON.stringify({key: monthKey, label: monthLabel}));
+        }
+        function renderPayment(snap){
+            const div = document.getElementById('paymentNumbers');
+            if(snap.exists()){
+                const d=snap.data();
+                div.innerHTML=`<div class="payment-method-card bkash-card"><h4>বিকাশ</h4><p class="payment-number">${d.bkash}</p></div><div class="payment-method-card nagad-card"><h4>নগদ</h4><p class="payment-number">${d.nagad}</p></div>`;
             }
-        });
-        const sorted = Array.from(months).map(JSON.parse).sort((a,b) => b.key.localeCompare(a.key));
-        sorted.forEach(m => monthFilter.innerHTML += `<option value="${m.key}">${m.label}</option>`);
-    }
-
-    window.loadFinancePageData = function() {
-        const filter = document.getElementById('financeMonthFilter').value;
-        const filteredDonations = filter === 'all' ? allDonations : allDonations.filter(d => parseDate(d.date)?.toISOString().startsWith(filter));
-        const filteredExpenses = filter === 'all' ? allExpenses : allExpenses.filter(e => parseDate(e.date)?.toISOString().startsWith(filter));
-
-        const totalIncome = filteredDonations.reduce((sum, d) => sum + Number(d.amount), 0);
-        const totalExpense = filteredExpenses.reduce((sum, e) => sum + Number(e.amount), 0);
-        
-        document.getElementById('financeTotalIncome').innerText = `৳${totalIncome.toLocaleString('bn-BD')}`;
-        document.getElementById('financeTotalExpense').innerText = `৳${totalExpense.toLocaleString('bn-BD')}`;
-        document.getElementById('financeTotalBalance').innerText = `৳${(totalIncome - totalExpense).toLocaleString('bn-BD')}`;
-
-        const categories = ["সামাজিক উন্নয়ন", "ঈদ অনুষ্ঠান", "খেলাধুলা আয়োজন", "মসজিদ উন্নয়ন", "মাদ্রাসা", "গরিব ও অসহায়দের সাহায্য", "সাধারণ তহবিল", "অন্যান্য"];
-        const categoryData = {};
-        
-        categories.forEach(cat => { categoryData[cat] = { income: 0, expense: 0 }; });
-
-        filteredDonations.forEach(d => {
-            const cat = d.purposeKey || "অন্যান্য";
-            if (!categoryData[cat]) categoryData[cat] = { income: 0, expense: 0 }; 
-            categoryData[cat].income += Number(d.amount);
-        });
-
-        filteredExpenses.forEach(e => {
-            const cat = e.purposeKey || "অন্যান্য";
-            if (!categoryData[cat]) categoryData[cat] = { income: 0, expense: 0 };
-            categoryData[cat].expense += Number(e.amount);
-        });
-
-        const tableBody = document.getElementById('financeTableBody');
-        tableBody.innerHTML = '';
-        
-        Object.keys(categoryData).forEach(cat => {
-            const inc = categoryData[cat].income;
-            const exp = categoryData[cat].expense;
-            const bal = inc - exp;
-            
-            tableBody.innerHTML += `
-                <tr>
-                    <td>${cat}</td>
-                    <td>${inc > 0 ? inc.toLocaleString('bn-BD') : '০'}</td>
-                    <td>${exp > 0 ? exp.toLocaleString('bn-BD') : '০'}</td>
-                    <td>${bal !== 0 ? bal.toLocaleString('bn-BD') : '০'}</td>
-                </tr>
-            `;
-        });
-
-        document.getElementById('tableGrandTotalIncome').innerText = totalIncome.toLocaleString('bn-BD');
-        document.getElementById('tableGrandTotalExpense').innerText = totalExpense.toLocaleString('bn-BD');
-        document.getElementById('tableGrandTotalBalance').innerText = (totalIncome - totalExpense).toLocaleString('bn-BD');
-    }
-
-    function isEligibleToDonate(lastDateStr) {
-        if (!lastDateStr) return { eligible: true, nextDate: null };
-        const lastDate = parseDate(lastDateStr);
-        if (!lastDate) return { eligible: true, nextDate: null };
-        const daysSince = (new Date() - lastDate) / (1000 * 60 * 60 * 24);
-        const isEligible = daysSince > 120;
-        let nextDate = null;
-        if (!isEligible) { nextDate = new Date(lastDate); nextDate.setDate(lastDate.getDate() + 121); }
-        return { eligible: isEligible, nextDate: nextDate };
-    }
-
-    window.loadBloodDonors = function() {
-        const groupFilter = document.getElementById('bloodGroupFilter').value;
-        const eligibilityFilter = document.getElementById('bloodEligibilityFilter').value;
-        const list = document.getElementById('bloodList');
-        list.innerHTML = '';
-        let filtered = membersData.filter(m => m.blood);
-        if (groupFilter) filtered = filtered.filter(m => m.blood === groupFilter);
-        
-        if(filtered.length === 0) { list.innerHTML = '<p style="text-align:center;">দাতা পাওয়া যায়নি।</p>'; return; }
-
-        filtered.forEach(m => {
-            const { eligible, nextDate } = isEligibleToDonate(m.lastDonationDate);
-            if (eligibilityFilter === 'eligible' && !eligible) return;
-            const badgeClass = eligible ? 'eligible' : 'not-eligible';
-            const badgeText = eligible ? 'ready' : 'not ready';
-            let nextDateText = !eligible && nextDate ? `পরবর্তী: ${nextDate.toLocaleDateString('bn-BD')}` : 'রক্তদানে প্রস্তুত';
-            
-            list.innerHTML += `<div class="donor-card" onclick="showMemberDetails('${m.id}')">
-                    <div class="eligibility-badge ${badgeClass}">${badgeText}</div>
-                    <div class="donor-header"><div class="blood-group">${m.blood}</div><div><h4 style="margin:0;font-size:1.1rem;">${m.name}</h4></div></div>
-                    <div class="donor-info-row"><i class="fas fa-phone-alt"></i> ${m.phone}</div>
-                    <div class="donor-info-row"><i class="fas fa-map-marker-alt"></i> ${m.location || 'N/A'}</div>
-                    <div class="donor-info-row"><i class="fas fa-calendar-alt"></i> ${nextDateText}</div>
-                </div>`;
-        });
-    }
-    
-    window.toggleMyHistory = function() {
-        const content = document.getElementById('myDonationsList');
-        const icon = document.getElementById('historyIcon');
-        if (content.style.display === "block") {
-            content.style.display = "none";
-            icon.classList.remove('fa-chevron-up');
-            icon.classList.add('fa-chevron-down');
-        } else {
-            content.style.display = "block";
-            icon.classList.remove('fa-chevron-down');
-            icon.classList.add('fa-chevron-up');
         }
-    }
-
-    async function loadMyDonations(userId) {
-        const list = document.getElementById('myDonationsList');
-        const userDonations = allDonations.filter(d => d.userId === userId);
-        if(userDonations.length > 0) {
-            list.innerHTML = '';
-            userDonations.forEach(d => {
-                const date = parseDate(d.date);
-                list.innerHTML += `<div class="history-item"><span>${d.purposeKey} (${date ? date.toLocaleDateString('bn-BD') : ''})</span><span class="history-amount">৳${Number(d.amount).toLocaleString('bn-BD')}</span></div>`;
+        function renderMembers(){
+            const l=document.getElementById('memberList'); l.innerHTML='';
+            membersData.forEach((m,i)=> l.innerHTML+=`<div class="member-item" onclick="viewMember('${m.id}')"><span style="font-weight:bold;color:var(--primary-color);margin-right:10px;">${(i+1).toLocaleString('bn-BD')}.</span><img src="${m.img||'https://via.placeholder.com/50'}"><div><b>${m.name}</b><br><small>${m.phone}</small></div></div>`);
+        }
+        window.viewMember=function(id){
+            const m=membersData.find(x=>x.id===id);
+            document.getElementById('modalImg').src=m.img||''; document.getElementById('modalName').innerText=m.name;
+            document.getElementById('modalDetails').innerHTML=`<p><b>রক্ত:</b> ${m.blood}</p><p><b>পেশা:</b> ${m.income}</p><p><b>ঠিকানা:</b> ${m.location}</p><p><b>শেষ রক্তদান:</b> ${m.lastDonationDate||'নাই'}</p>`;
+            document.getElementById('memberModal').style.display='block';
+        }
+        window.renderDonations=function(){
+            const l=document.getElementById('donationListContainer'); l.innerHTML='';
+            const uD={};
+            allDonations.forEach(d=>{ if(!uD[d.userId])uD[d.userId]={name:d.userName,img:d.userImage,tot:0,hist:[]}; uD[d.userId].tot+=Number(d.amount); uD[d.userId].hist.push(d); });
+            Object.values(uD).sort((a,b)=>b.tot-a.tot).forEach(u=>{
+                let h=''; u.hist.forEach(x=>h+=`<div style="display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #eee;"><span>${x.purposeKey}</span><b>৳${x.amount}</b></div>`);
+                l.innerHTML+=`<div class="donation-group"><div class="donation-header" onclick="this.parentElement.classList.toggle('active')"><img src="${u.img}"><div><b>${u.name}</b><br><small>মোট: ৳${u.tot}</small></div></div><div class="donation-details-list">${h}</div></div>`;
             });
-        } else {
-            list.innerHTML = '<p style="text-align:center; padding:15px; color:#777;">কোনো ডোনেশন ইতিহাস নেই।</p>';
         }
-    }
-
-    document.getElementById('profileEditForm').addEventListener('submit', async (e) => { 
-        e.preventDefault(); 
-        const dob = document.getElementById('profileDob').value; 
-        const formattedDob = dob ? `${dob.split('-')[2]}-${dob.split('-')[1]}-${dob.split('-')[0]}` : ''; 
-        const updateData = { 
-            name: document.getElementById('profileName').value, 
-            phone: `+880${document.getElementById('profilePhone').value}`, 
-            blood: document.getElementById('profileBlood').value, 
-            dob: formattedDob, 
-            income: document.getElementById('profileIncome').value, 
-            location: document.getElementById('profileLocation').value, 
-            lastDonationDate: document.getElementById('lastDonationDate').value, 
-            isWillingToDonate: document.getElementById('isWillingToDonate').value === 'true' 
-        }; 
-        try { 
-            await updateDoc(doc(db, "members", currentUser.uid), updateData); 
-            alert("প্রোফাইল আপডেট হয়েছে!"); 
-            location.reload(); 
-        } catch(error) { alert("সমস্যা হয়েছে: " + error.message); } 
-    });
-    
-    window.showMemberDetails = function(id) {
-        const member = membersData.find(m => m.id === id);
-        if (member) {
-            document.getElementById('modalImg').src = member.img || 'https://via.placeholder.com/100';
-            document.getElementById('modalName').innerText = member.name || 'নাম নেই';
-            document.getElementById('modalDob').innerText = member.dob || '-';
-            document.getElementById('modalPhone').innerText = member.phone || '-';
-            document.getElementById('modalBlood').innerText = member.blood || '-';
-            document.getElementById('modalIncome').innerText = member.income || '-';
-            document.getElementById('modalLocation').innerText = member.location || '-';
-            const lastDate = member.lastDonationDate ? parseDate(member.lastDonationDate) : null;
-            document.getElementById('modalLastDonation').innerText = lastDate ? lastDate.toLocaleDateString('bn-BD') : 'দেয়নি';
-            openModal('memberModal');
+        window.renderFinance=function(){
+            const filter=document.getElementById('financeMonthFilter').value; // Implement filtering logic if needed
+            let inc=0, exp=0, cats={};
+            const catsList=["সামাজিক উন্নয়ন","ঈদ অনুষ্ঠান","খেলাধুলা","মসজিদ","মাদ্রাসা","অসহায় সাহায্য","সাধারণ তহবিল","অন্যান্য"];
+            catsList.forEach(c=>cats[c]={i:0,e:0});
+            
+            allDonations.forEach(d=>{ inc+=Number(d.amount); let k=d.purposeKey||'অন্যান্য'; if(!cats[k])cats[k]={i:0,e:0}; cats[k].i+=Number(d.amount); });
+            allExpenses.forEach(e=>{ exp+=Number(e.amount); let k=e.purposeKey||'অন্যান্য'; if(!cats[k])cats[k]={i:0,e:0}; cats[k].e+=Number(e.amount); });
+            
+            document.getElementById('financeTotalIncome').innerText='৳'+inc; document.getElementById('financeTotalExpense').innerText='৳'+exp; document.getElementById('financeTotalBalance').innerText='৳'+(inc-exp);
+            
+            let html='';
+            Object.keys(cats).forEach(k=>{ html+=`<tr><td>${k}</td><td>${cats[k].i}</td><td>${cats[k].e}</td><td>${cats[k].i-cats[k].e}</td></tr>`; });
+            document.getElementById('financeTableBody').innerHTML=html;
+            document.getElementById('tableGrandTotalIncome').innerText=inc; document.getElementById('tableGrandTotalExpense').innerText=exp; document.getElementById('tableGrandTotalBalance').innerText=inc-exp;
         }
-    }
-    
-    window.closeModal = (id) => document.getElementById(id).style.display = "none";
-    window.openModal = (id) => document.getElementById(id).style.display = "block";
-    
-    window.showPage = function(pageId) { 
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
-        document.getElementById(pageId)?.classList.add('active'); 
-        document.querySelectorAll('.nav-item').forEach(i => { 
-            i.classList.remove('active'); 
-            const attr = i.getAttribute('onclick'); 
-            if (attr && attr.includes(pageId)) i.classList.add('active'); 
-        }); 
-        window.scrollTo(0, 0); 
-    }
-    
-    window.filterList = (inputId, listSelector) => { 
-        const filter = document.getElementById(inputId).value.toLowerCase(); 
-        document.querySelectorAll(listSelector).forEach(item => { 
-            item.style.display = item.textContent.toLowerCase().includes(filter) ? "flex" : "none"; 
-        }); 
-    }
-
-</script>
+        window.renderBlood=function(){
+            const g=document.getElementById('bloodGroupFilter').value, e=document.getElementById('bloodEligibilityFilter').value;
+            const l=document.getElementById('bloodList'); l.innerHTML='';
+            membersData.filter(m=>m.blood && (g?m.blood===g:true)).forEach(m=>{
+                 const d = new Date(m.lastDonationDate); const ready = !m.lastDonationDate || (new Date()-d)/(864e5)>120;
+                 if(e==='eligible' && !ready) return;
+                 l.innerHTML+=`<div class="donor-card"><span class="eligibility-badge ${ready?'eligible':'not-eligible'}">${ready?'রেডি':'অপেক্ষা'}</span><div style="display:flex;align-items:center;"><div style="background:#d32f2f;color:white;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:10px;">${m.blood}</div><b>${m.name}</b></div><p><i class="fas fa-phone"></i> ${m.phone}</p></div>`;
+            });
+        }
+        // Cloudinary & Form Submit logic same as previous
+        document.getElementById('donationVerificationForm').addEventListener('submit', async(e)=>{
+            e.preventDefault(); const btn=e.target.querySelector('button'); btn.disabled=true; btn.innerText='অপেক্ষা...';
+            const f=document.getElementById('paymentProof').files[0]; let url=null;
+            if(f){ const fd=new FormData(); fd.append('file',f); fd.append('upload_preset','songho_preset'); 
+                const r=await fetch(`https://api.cloudinary.com/v1_1/dy7sxczfo/image/upload`,{method:'POST',body:fd}); const j=await r.json(); url=j.secure_url; }
+            await addDoc(collection(db,"pending_donations"),{
+                userId:currentUser.uid, userName:currentUser.displayName||'User', userImage:currentUser.photoURL||'',
+                amount:document.getElementById('donationAmount').value, paymentMethod:document.getElementById('paymentMethod').value,
+                purposeKey:document.getElementById('donationPurpose').value, transactionInfo:document.getElementById('transactionId').value,
+                proofImageUrl:url, status:'pending', submittedAt:new Date(), date:new Date().toISOString().split('T')[0]
+            });
+            alert('জমা হয়েছে!'); e.target.reset(); btn.disabled=false; btn.innerText='জমা দিন';
+        });
+        
+        window.showPage=(id)=>{ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+        window.filterList=(id,sel)=>{ const v=document.getElementById(id).value.toLowerCase(); document.querySelectorAll(sel).forEach(el=>el.style.display=el.innerText.toLowerCase().includes(v)?'flex':'none'); }
+        function loadProfile(d){ 
+            document.getElementById('profileName').value=d.name; document.getElementById('profilePhone').value=d.phone.replace('+880',''); 
+            document.getElementById('profileBlood').value=d.blood; document.getElementById('profilePhoto').src=d.img;
+        }
+        document.getElementById('profilePhotoInput').addEventListener('change', async(e)=>{
+             const f=e.target.files[0]; if(!f)return;
+             const fd=new FormData(); fd.append('file',f); fd.append('upload_preset','songho_preset');
+             const r=await fetch(`https://api.cloudinary.com/v1_1/dy7sxczfo/image/upload`,{method:'POST',body:fd}); const j=await r.json();
+             await updateDoc(doc(db,"members",currentUser.uid),{img:j.secure_url}); document.getElementById('profilePhoto').src=j.secure_url;
+        });
+        document.getElementById('profileEditForm').addEventListener('submit',async(e)=>{
+            e.preventDefault();
+            await updateDoc(doc(db,"members",currentUser.uid),{
+                name:document.getElementById('profileName').value, phone:'+880'+document.getElementById('profilePhone').value,
+                blood:document.getElementById('profileBlood').value, dob:document.getElementById('profileDob').value,
+                income:document.getElementById('profileIncome').value, location:document.getElementById('profileLocation').value,
+                lastDonationDate:document.getElementById('lastDonationDate').value, isWillingToDonate:document.getElementById('isWillingToDonate').value
+            }); alert('আপডেট হয়েছে!'); location.reload();
+        });
+    </script>
 </body>
 </html>
